@@ -1,3 +1,5 @@
+import React from 'react';
+
 export enum AppView {
   DASHBOARD = 'dashboard',
   EMPLOYEES = 'employees',
@@ -15,6 +17,8 @@ export enum AppView {
   PAYMENT_DISPERSION = 'payment_dispersion',
   TEAM = 'team', // For single company
   AUDIT_LOG = 'audit_log', // New Audit Log view
+  SUPPORT = 'support',
+  HELP_ARTICLE = 'help_article',
   
   // Professional-level views
   PROFESSIONAL_DASHBOARD = 'professional_dashboard',
@@ -38,6 +42,8 @@ export enum AuthView {
   PRICING = 'pricing',
   ABOUT = 'about',
   CONTACT = 'contact',
+  SUPPORT = 'support',
+  HELP_ARTICLE = 'help_article',
 }
 
 export enum EmployeeStatus {
@@ -331,4 +337,14 @@ export interface AuditLogEvent {
     actionType: AuditLogActionType;
     description: string;
     ipAddress: string;
+}
+
+export type HelpArticleCategory = 'Primeros Pasos' | 'Nómina' | 'Reportes' | 'Empleados' | 'Configuración' | 'Facturación';
+
+export interface HelpArticle {
+  id: string;
+  title: string;
+  category: HelpArticleCategory;
+  content: React.ReactNode;
+  tags: string[];
 }

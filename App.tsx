@@ -1,6 +1,5 @@
 
 
-
 import React, { useState, useMemo } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
@@ -38,8 +37,14 @@ import ProfessionalIntegrations from './components/ProfessionalIntegrations';
 import ProfessionalCustomization from './components/ProfessionalCustomization';
 import ProfessionalBilling from './components/ProfessionalBilling';
 import AuditLog from './components/AuditLog';
-import { AppView, AuthView, Employee, Contract, EmployeeDocument, LiquidacionRun, PendingLiquidation, EmployeeStatus, Task, Company, UpcomingPayroll, ProfessionalAlert, ProfessionalActivity, AuditLogEvent } from './types';
-import { MOCK_EMPLOYEES, MOCK_CONTRACTS, MOCK_DOCUMENTS, MOCK_LIQUIDACIONES, MOCK_TASKS, MOCK_PAYROLL_HISTORY, MOCK_COMPANIES, MOCK_UPCOMING_PAYROLLS, MOCK_PROFESSIONAL_ALERTS, MOCK_PROFESSIONAL_ACTIVITY, MOCK_TEAM_MEMBERS, MOCK_BILLING_INFO, MOCK_AUDIT_LOGS } from './constants';
+import { AppView, AuthView, Employee, Contract, EmployeeDocument, LiquidacionRun, PendingLiquidation, EmployeeStatus, Task, Company, UpcomingPayroll, ProfessionalAlert, ProfessionalActivity, AuditLogEvent, HelpArticle } from './types';
+import { MOCK_EMPLOYEES, MOCK_CONTRACTS, MOCK_DOCUMENTS, MOCK_LIQUIDACIONES, MOCK_TASKS, MOCK_PAYROLL_HISTORY, MOCK_COMPANIES, MOCK_UPCOMING_PAYROLLS, MOCK_PROFESSIONAL_ALERTS, MOCK_PROFESSIONAL_ACTIVITY, MOCK_TEAM_MEMBERS, MOCK_BILLING_INFO, MOCK_AUDIT_LOGS, MOCK_HELP_ARTICLES } from './constants';
+import FeaturesPage from './components/FeaturesPage';
+import PricingPage from './components/PricingPage';
+import AboutPage from './components/AboutPage';
+import ContactPage from './components/ContactPage';
+import SupportPage from './components/SupportPage';
+import ArticlePage from './components/ArticlePage';
 
 export type UserType = 'single_company' | 'professional_firm';
 
@@ -51,6 +56,7 @@ const App: React.FC = () => {
 
   const [activeView, setActiveView] = useState<AppView>(AppView.DASHBOARD);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null);
+  const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
   
   // Data State
   const [employees, setEmployees] = useState<Employee[]>(MOCK_EMPLOYEES);
@@ -153,6 +159,24 @@ const App: React.FC = () => {
   const handleViewChange = (view: AppView) => {
     setSelectedEmployeeId(null);
     setActiveView(view);
+  };
+
+  const handleSelectArticle = (articleId: string) => {
+    setSelectedArticleId(articleId);
+    if (isAuthenticated) {
+        setActiveView(AppView.HELP_ARTICLE);
+    } else {
+        setAuthView(AuthView.HELP_ARTICLE);
+    }
+  };
+
+  const handleBackToHelpCenter = () => {
+    setSelectedArticleId(null);
+    if (isAuthenticated) {
+        setActiveView(AppView.SUPPORT);
+    } else {
+        setAuthView(AuthView.SUPPORT);
+    }
   };
   
   // --- Data Mutation Handlers ---
@@ -369,6 +393,12 @@ const App: React.FC = () => {
         return <Calculadora employees={companyFilteredData.employees} contracts={companyFilteredData.contracts} />;
       case AppView.PAYMENT_DISPERSION:
         return <PaymentDispersion employees={companyFilteredData.employees} payrollHistory={MOCK_PAYROLL_HISTORY} />;
+      case AppView.SUPPORT:
+        return <SupportPage articles={MOCK_HELP_ARTICLES} onSelectArticle={handleSelectArticle} />;
+      case AppView.HELP_ARTICLE: {
+        const article = MOCK_HELP_ARTICLES.find(a => a.id === selectedArticleId);
+        return article ? <ArticlePage article={article} onBack={handleBackToHelpCenter} /> : <SupportPage articles={MOCK_HELP_ARTICLES} onSelectArticle={handleSelectArticle} />;
+      }
       default:
         return <Dashboard employees={companyFilteredData.employees} contracts={companyFilteredData.contracts} setActiveView={handleViewChange}/>;
     }
@@ -386,6 +416,20 @@ const App: React.FC = () => {
             return <TermsOfService setAuthView={setAuthView} />;
         case AuthView.FAQ:
             return <FAQ setAuthView={setAuthView} />;
+        case AuthView.FEATURES:
+            return <FeaturesPage setAuthView={setAuthView} />;
+        case AuthView.PRICING:
+            return <PricingPage setAuthView={setAuthView} />;
+        case AuthView.ABOUT:
+            return <AboutPage setAuthView={setAuthView} />;
+        case AuthView.CONTACT:
+            return <ContactPage setAuthView={setAuthView} />;
+        case AuthView.SUPPORT:
+            return <SupportPage articles={MOCK_HELP_ARTICLES} onSelectArticle={handleSelectArticle} setAuthView={setAuthView} />;
+        case AuthView.HELP_ARTICLE: {
+            const article = MOCK_HELP_ARTICLES.find(a => a.id === selectedArticleId);
+            return article ? <ArticlePage article={article} onBack={handleBackToHelpCenter} /> : <SupportPage articles={MOCK_HELP_ARTICLES} onSelectArticle={handleSelectArticle} setAuthView={setAuthView} />;
+        }
         default:
             return <LandingPage setAuthView={setAuthView} />;
     }
@@ -420,6 +464,7 @@ const App: React.FC = () => {
         </main>
       </div>
       
+      {/* FIX: Replaced `onLogout` with the correctly named `handleLogout` function. */}
       <BottomNavBar activeView={activeView} setActiveView={handleViewChange} onLogout={handleLogout} />
 
       {isAddEmployeeModalOpen && (

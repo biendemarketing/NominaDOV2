@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { AuthView } from '../types';
 import { HandCoins, CheckCircle2, DollarSign, BarChartBig, ShieldCheck, ArrowRight, Users, FileText, ChevronDown, Menu, X } from './icons';
@@ -63,7 +64,7 @@ const FaqItem: React.FC<{ faq: { question: string, answer: string }, isOpen: boo
         <div className="border-b border-gray-200 last:border-b-0">
             <button
                 onClick={onClick}
-                className="w-full flex justify-between items-center text-left py-5 focus:outline-none"
+                className="w-full flex justify-between items-center text-left py-5 px-6 focus:outline-none"
             >
                 <h3 className="text-lg font-semibold text-primary">{faq.question}</h3>
                 <ChevronDown className={`w-6 h-6 text-secondary transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
@@ -71,7 +72,7 @@ const FaqItem: React.FC<{ faq: { question: string, answer: string }, isOpen: boo
             <div
                 className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-96' : 'max-h-0'}`}
             >
-                <p className="pb-5 text-gray-600">
+                <p className="px-6 pb-5 text-gray-600">
                     {faq.answer}
                 </p>
             </div>
@@ -257,9 +258,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ setAuthView }) => {
             <h1 className="text-2xl font-heading font-bold ml-2 text-primary">Nomina<span className="text-secondary">DO</span></h1>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-600 hover:text-primary transition">Características</a>
-            <a href="#precios" className="text-gray-600 hover:text-primary transition">Precios</a>
-            <a href="#faq" className="text-gray-600 hover:text-primary transition">FAQ</a>
+            <button onClick={() => setAuthView(AuthView.FEATURES)} className="text-gray-600 hover:text-primary transition">Características</button>
+            <button onClick={() => setAuthView(AuthView.PRICING)} className="text-gray-600 hover:text-primary transition">Precios</button>
+            <button onClick={() => setAuthView(AuthView.FAQ)} className="text-gray-600 hover:text-primary transition">FAQ</button>
           </nav>
           <div className="hidden md:flex items-center space-x-4">
             <button onClick={() => setAuthView(AuthView.LOGIN)} className="text-primary font-semibold hover:text-secondary transition">
@@ -289,9 +290,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ setAuthView }) => {
               </button>
           </div>
           <nav className="flex flex-col p-6 space-y-4">
-              <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-700 hover:text-primary transition text-lg">Características</a>
-              <a href="#precios" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-700 hover:text-primary transition text-lg">Precios</a>
-              <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-700 hover:text-primary transition text-lg">FAQ</a>
+              <button onClick={() => { setAuthView(AuthView.FEATURES); setIsMobileMenuOpen(false); }} className="text-gray-700 hover:text-primary transition text-lg text-left">Características</button>
+              <button onClick={() => { setAuthView(AuthView.PRICING); setIsMobileMenuOpen(false); }} className="text-gray-700 hover:text-primary transition text-lg text-left">Precios</button>
+              <button onClick={() => { setAuthView(AuthView.FAQ); setIsMobileMenuOpen(false); }} className="text-gray-700 hover:text-primary transition text-lg text-left">FAQ</button>
               <div className="border-t pt-4 space-y-3">
                  <button onClick={() => { setAuthView(AuthView.LOGIN); setIsMobileMenuOpen(false); }} className="w-full text-center text-primary font-semibold hover:text-secondary transition py-2 rounded-lg border border-primary">
                     Iniciar Sesión
@@ -515,7 +516,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setAuthView }) => {
                     <h2 className="text-3xl md:text-4xl font-bold text-center">El Impacto de NominaDO en tu Gestión</h2>
                      <p className="mt-4 max-w-3xl mx-auto text-lg text-center text-gray-300">Mide el antes y el después. NominaDO no solo ahorra tiempo, sino que eleva la precisión a nuevos niveles.</p>
                     <div className="mt-8">
-                         <div className="chart-container bg-white/10 rounded-lg p-4">
+                         <div className="chart-container bg-white/10 rounded-lg p-4 h-96">
                             <canvas id="kpiRadarChart"></canvas>
                         </div>
                     </div>
@@ -606,16 +607,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ setAuthView }) => {
                 <div>
                     <h3 className="font-heading font-semibold text-white uppercase tracking-wider text-sm">Producto</h3>
                     <ul className="mt-4 space-y-3">
-                        <li><a href="#features" className="text-gray-400 hover:text-white transition text-sm">Características</a></li>
-                        <li><a href="#precios" className="text-gray-400 hover:text-white transition text-sm">Precios</a></li>
+                        <li><button onClick={() => setAuthView(AuthView.FEATURES)} className="text-gray-400 hover:text-white transition text-sm text-left">Características</button></li>
+                        <li><button onClick={() => setAuthView(AuthView.PRICING)} className="text-gray-400 hover:text-white transition text-sm text-left">Precios</button></li>
                         <li><button onClick={() => setAuthView(AuthView.FAQ)} className="text-gray-400 hover:text-white transition text-sm text-left">Preguntas Frecuentes</button></li>
                     </ul>
                 </div>
                 <div>
                     <h3 className="font-heading font-semibold text-white uppercase tracking-wider text-sm">Empresa</h3>
                     <ul className="mt-4 space-y-3">
-                        <li><a href="#" className="text-gray-400 hover:text-white transition text-sm">Sobre Nosotros</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition text-sm">Contacto</a></li>
+                        <li><button onClick={() => setAuthView(AuthView.ABOUT)} className="text-gray-400 hover:text-white transition text-sm text-left">Sobre Nosotros</button></li>
+                        <li><button onClick={() => setAuthView(AuthView.CONTACT)} className="text-gray-400 hover:text-white transition text-sm text-left">Contacto</button></li>
+                        <li><button onClick={() => setAuthView(AuthView.SUPPORT)} className="text-gray-400 hover:text-white transition text-sm text-left">Soporte</button></li>
                     </ul>
                 </div>
                 <div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppView } from '../types';
-import { LayoutDashboard, Users, DollarSign, FileText, Settings, LogOut, ClipboardCheck, FileClock, Receipt, FileMinus, HandCoins, PieChart, CalendarDays, Calculator, Send, ArrowLeft, Briefcase, UsersCog, Plug, Palette, CreditCard, ScrollText } from './icons';
+import { LayoutDashboard, Users, DollarSign, FileText, Settings, LogOut, ClipboardCheck, FileClock, Receipt, FileMinus, HandCoins, PieChart, CalendarDays, Calculator, Send, ArrowLeft, Briefcase, UsersCog, Plug, Palette, CreditCard, ScrollText, HelpCircle } from './icons';
 
 interface SidebarProps {
   activeView: AppView;
@@ -125,12 +125,20 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, onLogout, 
       <div>
         <ul>
             {!isProfessionalLevelView && (
-              <NavItem
-                icon={<Settings className="w-5 h-5" />}
-                label="Configuración"
-                isActive={activeView === AppView.SETTINGS}
-                onClick={() => setActiveView(AppView.SETTINGS)}
-              />
+              <>
+                <NavItem
+                  icon={<Settings className="w-5 h-5" />}
+                  label="Configuración"
+                  isActive={activeView === AppView.SETTINGS}
+                  onClick={() => setActiveView(AppView.SETTINGS)}
+                />
+                <NavItem
+                  icon={<HelpCircle className="w-5 h-5" />}
+                  label="Soporte"
+                  isActive={activeView === AppView.SUPPORT || activeView === AppView.HELP_ARTICLE}
+                  onClick={() => setActiveView(AppView.SUPPORT)}
+                />
+              </>
             )}
            <NavItem
             icon={<LogOut className="w-5 h-5" />}

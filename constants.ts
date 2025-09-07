@@ -1,4 +1,5 @@
-import { Company, Employee, EmployeeStatus, Nationality, PayrollHistoryData, Task, TaskStatus, TaskPriority, Contract, PaymentHistory, EmployeeHistoryEvent, EmployeeDocument, PayrollRun, CompanyProfile, BankAccount, UserRole, LiquidacionRun, DocumentType, Holiday, UpcomingPayroll, PayrollStatus, ProfessionalAlert, AlertType, ProfessionalActivity, TeamMember, BillingInfo, AuditLogEvent } from './types';
+import React from 'react';
+import { Company, Employee, EmployeeStatus, Nationality, PayrollHistoryData, Task, TaskStatus, TaskPriority, Contract, PaymentHistory, EmployeeHistoryEvent, EmployeeDocument, PayrollRun, CompanyProfile, BankAccount, UserRole, LiquidacionRun, DocumentType, Holiday, UpcomingPayroll, PayrollStatus, ProfessionalAlert, AlertType, ProfessionalActivity, TeamMember, BillingInfo, AuditLogEvent, HelpArticle } from './types';
 
 export const MOCK_COMPANIES: Company[] = [
   { 
@@ -493,4 +494,72 @@ export const MOCK_AUDIT_LOGS: AuditLogEvent[] = [
     { id: 'aud-005', timestamp: yesterday.toISOString(), userId: 'tm-001', actionType: 'CREATE', description: 'Laura Gómez añadió al nuevo empleado Carlos Martínez.', ipAddress: '192.168.1.1' },
     { id: 'aud-006', timestamp: twoDaysAgo.toISOString(), userId: 'tm-001', actionType: 'DELETE', description: 'Laura Gómez eliminó la empresa "Cliente Antiguo SRL".', ipAddress: '192.168.1.1' },
     { id: 'aud-007', timestamp: twoDaysAgo.toISOString(), userId: 'tm-002', actionType: 'LOGOUT', description: 'Pedro Martínez cerró sesión.', ipAddress: '200.111.55.23' },
+];
+
+// FIX: Replaced JSX with React.createElement to be compatible with a .ts file.
+export const MOCK_HELP_ARTICLES: HelpArticle[] = [
+  {
+    id: 'setup-01',
+    title: '¿Cómo configuro mi empresa por primera vez?',
+    category: 'Primeros Pasos',
+    tags: ['configuración', 'empresa', 'inicio', 'rnc'],
+    content: React.createElement(React.Fragment, null,
+      React.createElement("p", null, "Configurar tu empresa en NominaDO es el primer paso para automatizar tu nómina. Sigue estas instrucciones:"),
+      React.createElement("ol", null,
+        React.createElement("li", null, "Ve a ", React.createElement("strong", null, "Configuración"), " en el menú lateral."),
+        React.createElement("li", null, "Selecciona la pestaña ", React.createElement("strong", null, "Perfil de la Empresa"), "."),
+        React.createElement("li", null, "Rellena todos los campos, incluyendo el Nombre de la Empresa y el RNC. Esta información se usará para generar tus reportes oficiales."),
+        React.createElement("li", null, "¡Guarda los cambios y listo! Ya puedes empezar a añadir empleados.")
+      )
+    ),
+  },
+  {
+    id: 'payroll-01',
+    title: 'Correr una nómina quincenal',
+    category: 'Nómina',
+    tags: ['nómina', 'pago', 'quincena', 'procesar'],
+    content: React.createElement(React.Fragment, null,
+      React.createElement("p", null, "Procesar una nómina quincenal es muy sencillo con nuestro asistente:"),
+      React.createElement("ol", null,
+          React.createElement("li", null, "Desde el menú de ", React.createElement("strong", null, "Nómina"), ", haz clic en \"Correr Nueva Nómina\"."),
+          React.createElement("li", null, React.createElement("strong", null, "Paso 1:"), " Selecciona el período de pago (ej. 1ra Quincena de Julio)."),
+          React.createElement("li", null, React.createElement("strong", null, "Paso 2:"), " Revisa las novedades. Aquí puedes añadir horas extras, comisiones o deducciones para empleados específicos."),
+          React.createElement("li", null, React.createElement("strong", null, "Paso 3:"), " Previsualiza los resultados. El sistema te mostrará un desglose de ingresos, deducciones y el neto a pagar para cada empleado."),
+          React.createElement("li", null, React.createElement("strong", null, "Paso 4:"), " Si todo está correcto, haz clic en \"Confirmar y Procesar\". ¡Tu nómina quedará registrada!")
+      ),
+      React.createElement("p", null, "Luego podrás descargar los reportes de pago y el archivo para tu banco desde la misma pantalla.")
+    ),
+  },
+  {
+    id: 'reports-01',
+    title: 'Generar el archivo para la TSS (SUIR+)',
+    category: 'Reportes',
+    tags: ['tss', 'suir', 'reporte', 'autodeterminación'],
+    content: React.createElement(React.Fragment, null,
+      React.createElement("p", null, "El archivo de Autodeterminación para la TSS se genera en segundos:"),
+      React.createElement("ol", null,
+          React.createElement("li", null, "Navega a la sección de ", React.createElement("strong", null, "Reportes"), "."),
+          React.createElement("li", null, "Busca la tarjeta de \"Autodeterminación (SUIR+)\" y haz clic en \"Generar Reporte\"."),
+          React.createElement("li", null, "Selecciona el mes y año del período que deseas reportar."),
+          React.createElement("li", null, "Haz clic en \"Generar\". Se descargará un archivo ", React.createElement("strong", null, ".txt"), " con el formato exacto requerido por la TSS."),
+          React.createElement("li", null, "Sube este archivo directamente a la plataforma SUIR+ de la TSS para completar tu declaración.")
+      )
+    ),
+  },
+   {
+    id: 'employees-01',
+    title: '¿Cómo añado un nuevo empleado?',
+    category: 'Empleados',
+    tags: ['empleado', 'añadir', 'nuevo', 'contrato'],
+    content: React.createElement(React.Fragment, null,
+      React.createElement("p", null, "Para añadir un nuevo empleado a tu empresa:"),
+      React.createElement("ol", null,
+          React.createElement("li", null, "Ve a la sección de ", React.createElement("strong", null, "Empleados"), " en el menú lateral."),
+          React.createElement("li", null, "Haz clic en el botón \"Añadir Empleado\" en la esquina superior derecha."),
+          React.createElement("li", null, "Completa el formulario con la información personal, salarial y de contrato del nuevo miembro del equipo."),
+          React.createElement("li", null, "Si el empleado es extranjero, asegúrate de marcar la casilla correspondiente y llenar los datos sobre su estatus migratorio y fiscal."),
+          React.createElement("li", null, "Guarda los cambios. El nuevo empleado aparecerá en tu lista y será incluido en la próxima nómina.")
+      )
+    ),
+  },
 ];
