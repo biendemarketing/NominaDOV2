@@ -1,5 +1,6 @@
 
 
+
 import React, { useState, useMemo } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
@@ -390,7 +391,7 @@ const App: React.FC = () => {
     }
   }
   
-  const currentCompany = selectedCompanyId ? companies.find(c => c.id === selectedCompanyId) : null;
+  const currentCompany = companies.find(c => c.id === selectedCompanyId) ?? null;
 
   return (
     <div className="md:flex h-screen bg-light font-sans text-gray-800">

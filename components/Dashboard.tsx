@@ -12,6 +12,12 @@ interface DashboardProps {
     setActiveView: (view: AppView) => void;
 }
 
+interface DashboardAlert {
+  id: string;
+  icon: React.ReactNode;
+  text: string;
+}
+
 const StatCard: React.FC<{ icon: React.ReactNode; title: string; value: string; footer: string }> = ({ icon, title, value, footer }) => (
   <Card>
     <div className="flex items-center">
@@ -35,7 +41,7 @@ const Dashboard: React.FC<DashboardProps> = ({ employees, contracts, setActiveVi
   const formatCurrency = (amount: number) => new Intl.NumberFormat('es-DO', { style: 'currency', currency: 'DOP' }).format(amount);
 
   const alerts = useMemo(() => {
-    const notifications = [];
+    const notifications: DashboardAlert[] = [];
     const now = new Date();
     
     // Contracts expiring soon (within 30 days)
