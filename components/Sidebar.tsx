@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppView } from '../types';
-import { LayoutDashboard, Users, DollarSign, FileText, Settings, LogOut, ClipboardCheck, FileClock, Receipt, FileMinus, HandCoins, PieChart, CalendarDays, Calculator, Send, ArrowLeft, Briefcase, UsersCog, Plug, Palette, CreditCard, ScrollText, HelpCircle } from './icons';
+import { LayoutDashboard, Users, DollarSign, FileText, Settings, LogOut, ClipboardCheck, FileClock, Receipt, FileMinus, HandCoins, PieChart, CalendarDays, Calculator, Send, ArrowLeft, Briefcase, UsersCog, Plug, Palette, CreditCard, ScrollText, HelpCircle, Files } from './icons';
 
 interface SidebarProps {
   activeView: AppView;
@@ -38,8 +38,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, onLogout, 
   const singleCompanyNavItems = [
     { id: AppView.DASHBOARD, label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
     { id: AppView.EMPLOYEES, label: 'Empleados', icon: <Users className="w-5 h-5" /> },
-    { id: AppView.TEAM, label: 'Equipo', icon: <UsersCog className="w-5 h-5" /> },
+    { id: AppView.TEAM, label: 'Equipo', icon: <UsersCog className="h-5 w-auto" /> },
     { id: AppView.CONTRACTS, label: 'Contratos', icon: <FileClock className="w-5 h-5" /> },
+    { id: AppView.DOCUMENTS, label: 'Documentos', icon: <Files className="h-5 w-auto" /> },
     { id: AppView.PAYROLL, label: 'Nómina', icon: <DollarSign className="w-5 h-5" /> },
     { id: AppView.LIQUIDACIONES, label: 'Liquidaciones', icon: <FileMinus className="w-5 h-5" /> },
     { id: AppView.PAYMENT_DISPERSION, label: 'Dispersión de Pagos', icon: <Send className="w-5 h-5" /> },
@@ -48,8 +49,8 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, onLogout, 
     { id: AppView.REPORTS, label: 'Reportes', icon: <FileText className="w-5 h-5" /> },
     { id: AppView.ANALYTICS, label: 'Analítica', icon: <PieChart className="w-5 h-5" /> },
     { id: AppView.CALENDAR, label: 'Calendario', icon: <CalendarDays className="w-5 h-5" /> },
-    { id: AppView.CALCULADORA, label: 'Calculadora', icon: <Calculator className="w-5 h-5" /> },
-    { id: AppView.AUDIT_LOG, label: 'Auditoría', icon: <ScrollText className="w-5 h-5" /> },
+    { id: AppView.CALCULADORA, label: 'Calculadora', icon: <Calculator className="h-5 w-auto" /> },
+    { id: AppView.AUDIT_LOG, label: 'Auditoría', icon: <ScrollText className="h-5 w-auto" /> },
   ];
   
   const professionalClientNav = [
@@ -59,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, onLogout, 
   ];
 
   const professionalAccountNav = [
-      { id: AppView.PROFESSIONAL_TEAM, label: 'Equipo', icon: <UsersCog className="w-5 h-5" /> },
+      { id: AppView.PROFESSIONAL_TEAM, label: 'Equipo', icon: <UsersCog className="h-5 w-auto" /> },
       { id: AppView.PROFESSIONAL_INTEGRATIONS, label: 'Integraciones', icon: <Plug className="w-5 h-5" /> },
       { id: AppView.PROFESSIONAL_CUSTOMIZATION, label: 'Personalización', icon: <Palette className="w-5 h-5" /> },
       { id: AppView.PROFESSIONAL_ACCOUNT, label: 'Cuenta', icon: <Settings className="w-5 h-5" /> },

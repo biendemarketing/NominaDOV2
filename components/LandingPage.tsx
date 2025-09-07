@@ -1,7 +1,8 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { AuthView } from '../types';
-import { HandCoins, CheckCircle2, DollarSign, BarChartBig, ShieldCheck, ArrowRight, Users, FileText, ChevronDown, Menu, X } from './icons';
+import { HandCoins, CheckCircle2, DollarSign, BarChartBig, ShieldCheck, ArrowRight, Users, FileText, ChevronDown, Menu, X, FileSignature, FileMinus, Send, HelpCircle } from './icons';
 
 declare var Chart: any;
 
@@ -9,14 +10,14 @@ interface LandingPageProps {
   setAuthView: (view: AuthView) => void;
 }
 
-const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string }> = ({ icon, title, description }) => (
-  <div className="bg-white p-6 rounded-xl border border-gray-200/80 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
+const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string; onClick: () => void; }> = ({ icon, title, description, onClick }) => (
+  <button onClick={onClick} className="bg-white p-6 rounded-xl border border-gray-200/80 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 text-left h-full flex flex-col items-start">
     <div className="flex items-center justify-center w-12 h-12 bg-secondary/10 rounded-lg mb-4">
       {icon}
     </div>
     <h3 className="font-heading text-xl font-bold text-primary mb-2">{title}</h3>
-    <p className="text-gray-500">{description}</p>
-  </div>
+    <p className="text-gray-500 flex-grow">{description}</p>
+  </button>
 );
 
 const profesionalPlanData = [
@@ -325,34 +326,58 @@ const LandingPage: React.FC<LandingPageProps> = ({ setAuthView }) => {
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               <FeatureCard 
+                onClick={() => setAuthView(AuthView.FEATURE_PAYROLL)}
                 icon={<DollarSign className="w-6 h-6 text-secondary"/>}
                 title="Cálculo Automatizado"
                 description="Calcula salarios, TSS (SFS, AFP) e ISR sin errores y aplicando los topes vigentes automáticamente."
               />
               <FeatureCard 
+                onClick={() => setAuthView(AuthView.FEATURE_EMPLOYEES)}
                 icon={<Users className="w-6 h-6 text-secondary"/>}
                 title="Gestión de Empleados"
                 description="Centraliza la información de tus empleados, incluyendo un módulo especial para extranjeros."
               />
               <FeatureCard 
+                onClick={() => setAuthView(AuthView.FEATURE_REPORTS)}
                 icon={<FileText className="w-6 h-6 text-secondary"/>}
                 title="Reportes y Cumplimiento"
                 description="Genera con un clic los archivos para SUIR+, IR-3, DGT-3 y DGT-4. Siempre al día con la ley."
               />
               <FeatureCard 
+                onClick={() => setAuthView(AuthView.FEATURE_DASHBOARD)}
                 icon={<BarChartBig className="w-6 h-6 text-secondary"/>}
                 title="Dashboard Inteligente"
                 description="Visualiza KPIs importantes, costos históricos y recibe alertas para nunca olvidar un pago."
               />
                <FeatureCard 
-                icon={<HandCoins className="w-6 h-6 text-secondary"/>}
-                title="Portal del Empleado"
-                description="Permite que tus empleados accedan a sus volantes de pago y soliciten vacaciones en línea."
-              />
-              <FeatureCard 
+                onClick={() => setAuthView(AuthView.FEATURE_SECURITY)}
                 icon={<ShieldCheck className="w-6 h-6 text-secondary"/>}
                 title="Seguridad y Confianza"
                 description="Tus datos están protegidos con encriptación de nivel bancario. Tu tranquilidad es nuestra prioridad."
+              />
+              <FeatureCard 
+                onClick={() => setAuthView(AuthView.FEATURE_CONTRACTS)}
+                icon={<FileSignature className="w-6 h-6 text-secondary"/>}
+                title="Gestión de Contratos"
+                description="Maneja el ciclo de vida de los contratos de trabajo, desde la generación hasta la firma y archivo digital."
+              />
+              <FeatureCard 
+                onClick={() => setAuthView(AuthView.FEATURE_LIQUIDACIONES)}
+                icon={<FileMinus className="w-6 h-6 text-secondary"/>}
+                title="Cálculo de Liquidaciones"
+                description="Calcula las prestaciones laborales (preaviso, cesantía) de forma precisa según el Código de Trabajo."
+              />
+              <FeatureCard 
+                onClick={() => setAuthView(AuthView.FEATURE_DISPERSIONS)}
+                icon={<Send className="w-6 h-6 text-secondary"/>}
+                title="Dispersión de Pagos"
+                description="Genera los archivos de pago masivo en el formato de los principales bancos para agilizar los depósitos."
+              />
+               <FeatureCard 
+                onClick={() => setAuthView(AuthView.FEATURE_SUPPORT_PAGE)}
+                icon={<HelpCircle className="w-6 h-6 text-secondary"/>}
+                title="Soporte Especializado"
+                description="Recibe asistencia de un equipo local que entiende a fondo las leyes y regulaciones dominicanas."
               />
             </div>
           </div>

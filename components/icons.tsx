@@ -236,3 +236,6 @@ export const BookOpen: React.FC<IconProps> = ({ className }) => (
 export const MessageSquare: React.FC<IconProps> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
 );
+export const Files: React.FC<IconProps> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M15.5 2H8.6c-.4 0-.8.2-1.1.5-.3.3-.5.7-.5 1.1V14a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V5.4a2 2 0 0 0-.5-1.1 2 2 0 0 0-1.1-.5z"/><path d="M4 14a2 2 0 0 1 2-2h7"/><path d="M4 18a2 2 0 0 1 2-2h1"/></svg>
+);

@@ -1,19 +1,30 @@
-import React, { useState } from 'react';
-import { EmployeeDocument, DocumentType } from '../types';
+import React, { useState, useEffect } from 'react';
+import { EmployeeDocument, DocumentType, Employee } from '../types';
 import { DOCUMENT_TYPES } from '../constants';
 import { FileUp } from './icons';
 
 interface UploadDocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (docData: Omit<EmployeeDocument, 'id' | 'uploadDate' | 'status' | 'employeeId'>) => void;
+  onSave: (docData: Omit<EmployeeDocument, 'id' | 'uploadDate'>) => void;
+  forceEmployeeId?: string;
+  employees?: Employee[];
 }
 
-const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({ isOpen, onClose, onSave }) => {
+const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({ isOpen, onClose, onSave, forceEmployeeId, employees }) => {
   const [name, setName] = useState('');
-  const [type, setType] = useState<DocumentType>('Cédula/ID');
+  const [type, setType] = useState<DocumentType>('Otro');
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState('');
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>('company'); // Default to company doc
+  
+  useEffect(() => {
+    if (isOpen && forceEmployeeId) {
+        setType('Cédula/ID'); // Default for new employee docs
+    } else if (isOpen) {
+        setType('Política Interna'); // Default for company docs
+    }
+  }, [isOpen, forceEmployeeId]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -41,7 +52,16 @@ const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({ isOpen, onClo
     reader.onloadend = () => {
         const fileContent = reader.result as string;
         const fileType = file.type;
-        onSave({ name, type, fileContent, fileType });
+        const employeeIdForDoc = forceEmployeeId ? forceEmployeeId : (selectedEmployeeId === 'company' ? undefined : selectedEmployeeId);
+
+        onSave({ 
+            name, 
+            type, 
+            fileContent, 
+            fileType, 
+            status: 'Otro', // Default status for new uploads
+            employeeId: employeeIdForDoc 
+        });
         handleClose();
     };
     reader.onerror = () => {
@@ -52,9 +72,10 @@ const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({ isOpen, onClo
 
   const handleClose = () => {
     setName('');
-    setType('Cédula/ID');
+    setType('Otro');
     setFile(null);
     setError('');
+    setSelectedEmployeeId('company');
     onClose();
   }
 
@@ -69,6 +90,20 @@ const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({ isOpen, onClo
                 <p className="text-gray-500 mt-1">Selecciona un archivo y asígnale un nombre y tipo.</p>
             </div>
             <div className="p-6 space-y-4">
+                {!forceEmployeeId && employees && (
+                    <div>
+                        <label htmlFor="employeeId" className="block text-sm font-semibold mb-2 text-gray-600">Asociar a (Opcional)</label>
+                        <select 
+                            id="employeeId" 
+                            value={selectedEmployeeId} 
+                            onChange={(e) => setSelectedEmployeeId(e.target.value)}
+                            className="w-full px-4 py-2 bg-light border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary/50 transition"
+                        >
+                            <option value="company">-- Documento de la Empresa --</option>
+                            {employees.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
+                        </select>
+                    </div>
+                )}
                 <div>
                     <label htmlFor="docName" className="block text-sm font-semibold mb-2 text-gray-600">Nombre del Documento</label>
                     <input 
@@ -89,7 +124,7 @@ const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({ isOpen, onClo
                         required 
                         className="w-full px-4 py-2 bg-light border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary/50 transition"
                     >
-                        {DOCUMENT_TYPES.map(docType => (
+                        {[...DOCUMENT_TYPES, 'Política Interna', 'Otro'].map(docType => (
                             <option key={docType} value={docType}>{docType}</option>
                         ))}
                     </select>

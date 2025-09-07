@@ -45,6 +45,17 @@ import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import SupportPage from './components/SupportPage';
 import ArticlePage from './components/ArticlePage';
+import FeaturePayrollPage from './components/FeaturePayrollPage';
+import FeatureEmployeesPage from './components/FeatureEmployeesPage';
+import FeatureReportsPage from './components/FeatureReportsPage';
+import FeatureDashboardPage from './components/FeatureDashboardPage';
+import FeatureSecurityPage from './components/FeatureSecurityPage';
+import FeatureContractsPage from './components/FeatureContractsPage';
+import FeatureLiquidacionesPage from './components/FeatureLiquidacionesPage';
+import FeatureDispersionsPage from './components/FeatureDispersionsPage';
+import FeatureSupportPage from './components/FeatureSupportPage';
+import DocumentsPage from './components/DocumentsPage';
+
 
 export type UserType = 'single_company' | 'professional_firm';
 
@@ -379,6 +390,13 @@ const App: React.FC = () => {
           setDocuments={setDocuments} 
           onUpdateContract={handleUpdateContract}
         />;
+      case AppView.DOCUMENTS:
+        return <DocumentsPage
+          documents={documents}
+          employees={companyFilteredData.employees}
+          onAddNewDocument={handleAddNewDocument}
+          setDocuments={setDocuments}
+        />;
       case AppView.PAYSLIPS:
         return <Payslips employees={companyFilteredData.employees} />;
       case AppView.LIQUIDACIONES:
@@ -407,9 +425,9 @@ const App: React.FC = () => {
   if (!isAuthenticated) {
     switch (authView) {
         case AuthView.LOGIN:
-            return <LoginPage onLogin={handleLogin} switchToRegister={() => setAuthView(AuthView.REGISTER)} />;
+            return <LoginPage onLogin={handleLogin} switchToRegister={() => setAuthView(AuthView.REGISTER)} switchToLanding={() => setAuthView(AuthView.LANDING)} />;
         case AuthView.REGISTER:
-            return <RegisterPage onRegister={handleLogin} switchToLogin={() => setAuthView(AuthView.LOGIN)} />;
+            return <RegisterPage onRegister={handleLogin} switchToLogin={() => setAuthView(AuthView.LOGIN)} switchToLanding={() => setAuthView(AuthView.LANDING)} />;
         case AuthView.PRIVACY:
             return <PrivacyPolicy setAuthView={setAuthView} />;
         case AuthView.TERMS:
@@ -430,6 +448,24 @@ const App: React.FC = () => {
             const article = MOCK_HELP_ARTICLES.find(a => a.id === selectedArticleId);
             return article ? <ArticlePage article={article} onBack={handleBackToHelpCenter} /> : <SupportPage articles={MOCK_HELP_ARTICLES} onSelectArticle={handleSelectArticle} setAuthView={setAuthView} />;
         }
+        case AuthView.FEATURE_PAYROLL:
+            return <FeaturePayrollPage setAuthView={setAuthView} />;
+        case AuthView.FEATURE_EMPLOYEES:
+            return <FeatureEmployeesPage setAuthView={setAuthView} />;
+        case AuthView.FEATURE_REPORTS:
+            return <FeatureReportsPage setAuthView={setAuthView} />;
+        case AuthView.FEATURE_DASHBOARD:
+            return <FeatureDashboardPage setAuthView={setAuthView} />;
+        case AuthView.FEATURE_SECURITY:
+            return <FeatureSecurityPage setAuthView={setAuthView} />;
+        case AuthView.FEATURE_CONTRACTS:
+            return <FeatureContractsPage setAuthView={setAuthView} />;
+        case AuthView.FEATURE_LIQUIDACIONES:
+            return <FeatureLiquidacionesPage setAuthView={setAuthView} />;
+        case AuthView.FEATURE_DISPERSIONS:
+            return <FeatureDispersionsPage setAuthView={setAuthView} />;
+        case AuthView.FEATURE_SUPPORT_PAGE:
+            return <FeatureSupportPage setAuthView={setAuthView} />;
         default:
             return <LandingPage setAuthView={setAuthView} />;
     }

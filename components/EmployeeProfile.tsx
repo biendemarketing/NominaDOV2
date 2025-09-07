@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { MOCK_PAYMENT_HISTORY, MOCK_EMPLOYEE_HISTORY, MOCK_COMPANY_PROFILE } from '../constants';
 import { Employee, Contract, PaymentHistory, EmployeeHistoryEvent, Nationality, EmployeeDocument } from '../types';
@@ -70,12 +71,8 @@ const EmployeeProfile: React.FC<EmployeeProfileProps> = ({ employeeId, employees
     setDocuments(docs => docs.filter(doc => doc.id !== docId));
   };
   
-  const handleSaveDocument = (docData: Omit<EmployeeDocument, 'id' | 'uploadDate' | 'status' | 'employeeId'>) => {
-    onAddNewDocument({
-        ...docData,
-        employeeId: employee.id,
-        status: 'Otro', // default status
-    });
+  const handleSaveDocument = (docData: Omit<EmployeeDocument, 'id' | 'uploadDate'>) => {
+    onAddNewDocument(docData);
     setIsUploadModalOpen(false);
   };
   
@@ -330,6 +327,7 @@ const EmployeeProfile: React.FC<EmployeeProfileProps> = ({ employeeId, employees
         isOpen={isUploadModalOpen}
         onClose={() => setIsUploadModalOpen(false)}
         onSave={handleSaveDocument}
+        forceEmployeeId={employee.id}
       />
     </div>
   );

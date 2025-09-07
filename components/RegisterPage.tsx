@@ -5,9 +5,10 @@ import { UserType } from '../App';
 interface RegisterPageProps {
     onRegister: (userType: UserType) => void;
     switchToLogin: () => void;
+    switchToLanding: () => void;
 }
 
-const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister, switchToLogin }) => {
+const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister, switchToLogin, switchToLanding }) => {
     const [userType, setUserType] = useState<UserType>('single_company');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -77,6 +78,12 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister, switchToLogin }
                         </button>
                     </p>
                 </div>
+                <p className="text-center text-sm text-gray-500 mt-6">
+                    o{' '}
+                    <button onClick={switchToLanding} className="font-semibold text-primary hover:underline">
+                        Volver al inicio
+                    </button>
+                </p>
             </div>
         </div>
     );

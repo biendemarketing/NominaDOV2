@@ -19,6 +19,7 @@ export enum AppView {
   AUDIT_LOG = 'audit_log', // New Audit Log view
   SUPPORT = 'support',
   HELP_ARTICLE = 'help_article',
+  DOCUMENTS = 'documents',
   
   // Professional-level views
   PROFESSIONAL_DASHBOARD = 'professional_dashboard',
@@ -44,6 +45,15 @@ export enum AuthView {
   CONTACT = 'contact',
   SUPPORT = 'support',
   HELP_ARTICLE = 'help_article',
+  FEATURE_PAYROLL = 'feature_payroll',
+  FEATURE_EMPLOYEES = 'feature_employees',
+  FEATURE_REPORTS = 'feature_reports',
+  FEATURE_DASHBOARD = 'feature_dashboard',
+  FEATURE_SECURITY = 'feature_security',
+  FEATURE_CONTRACTS = 'feature_contracts',
+  FEATURE_LIQUIDACIONES = 'feature_liquidaciones',
+  FEATURE_DISPERSIONS = 'feature_dispersions',
+  FEATURE_SUPPORT_PAGE = 'feature_support_page',
 }
 
 export enum EmployeeStatus {
@@ -197,11 +207,11 @@ export interface EmployeeHistoryEvent {
   description: string;
 }
 
-export type DocumentType = 'Contrato' | 'Cédula/ID' | 'Certificación' | 'CV' | 'Título Universitario' | 'Carta de Referencia' | 'Amonestación';
+export type DocumentType = 'Contrato' | 'Cédula/ID' | 'Certificación' | 'CV' | 'Título Universitario' | 'Carta de Referencia' | 'Amonestación' | 'Política Interna' | 'Otro';
 
 export interface EmployeeDocument {
     id: string;
-    employeeId: string;
+    employeeId?: string;
     name: string;
     type: DocumentType;
     uploadDate: string;
