@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// FIX: Changed import path to be explicit, pointing to index file.
 import { Employee, Contract, ContractStatus } from '../types/index';
+import { X } from './icons';
 
 interface EditContractModalProps {
   isOpen: boolean;
@@ -87,9 +87,14 @@ const EditContractModal: React.FC<EditContractModalProps> = ({ isOpen, onClose, 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg">
-        <div className="p-6 border-b">
-            <h2 className="font-heading text-2xl font-bold text-primary">Editar Contrato</h2>
-            <p className="text-gray-500 mt-1">Modificando contrato de <span className="font-semibold">{employee.name}</span>.</p>
+        <div className="p-6 border-b flex justify-between items-start">
+            <div>
+                <h2 className="font-heading text-2xl font-bold text-primary">Editar Contrato</h2>
+                <p className="text-gray-500 mt-1">Modificando contrato de <span className="font-semibold">{employee.name}</span>.</p>
+            </div>
+             <button onClick={onClose} className="p-1 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-600">
+                <X className="w-6 h-6" />
+            </button>
         </div>
         <form onSubmit={handleSubmit}>
             <div className="p-6 space-y-4">

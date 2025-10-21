@@ -1,8 +1,6 @@
-
-
 import React, { useState } from 'react';
-// FIX: Changed import path to be explicit, pointing to index file.
 import { Employee, Contract, Nationality } from '../types/index';
+import { X } from './icons';
 
 interface AddEmployeeModalProps {
   isOpen: boolean;
@@ -95,12 +93,17 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({ isOpen, onClose, on
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b">
-            <h2 className="font-heading text-2xl font-bold text-primary">Añadir Nuevo Empleado</h2>
-            <p className="text-gray-500 mt-1">Completa la información del empleado y su contrato.</p>
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+        <div className="p-6 border-b flex justify-between items-start">
+            <div>
+                <h2 className="font-heading text-2xl font-bold text-primary">Añadir Nuevo Empleado</h2>
+                <p className="text-gray-500 mt-1">Completa la información del empleado y su contrato.</p>
+            </div>
+            <button onClick={onClose} className="p-1 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-600">
+                <X className="w-6 h-6" />
+            </button>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="overflow-y-auto">
             <div className="p-6 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <InputField label="Nombre Completo" id="name" value={formData.name} onChange={handleChange} />
@@ -143,7 +146,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({ isOpen, onClose, on
                     <InputField label="Fecha de Fin" id="endDate" type="date" value={formData.endDate} onChange={handleChange} disabled={formData.isIndefinite} required={!formData.isIndefinite}/>
                 </div>
             </div>
-            <div className="p-6 bg-light flex justify-end items-center space-x-3 rounded-b-xl">
+            <div className="p-6 bg-light flex justify-end items-center space-x-3 rounded-b-xl border-t">
                 <button type="button" onClick={onClose} className="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition-all">
                     Cancelar
                 </button>

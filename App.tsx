@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState, useMemo } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
@@ -16,7 +12,6 @@ import Reports from './components/Reports';
 import EmployeeProfile from './components/EmployeeProfile';
 import Settings from './components/Settings';
 import Contracts from './components/Contracts';
-// FIX: Changed default import for Payslips to a named import to resolve module loading error.
 import { Payslips } from './components/Payslips';
 import Liquidaciones from './components/Liquidaciones';
 import Analytics from './components/Analytics';
@@ -35,16 +30,13 @@ import ProfessionalAnalytics from './components/ProfessionalAnalytics';
 import ProfessionalAccount from './components/ProfessionalAccount';
 import CompanyModal from './components/CompanyModal';
 import Team from './components/Team';
-// FIX: Changed default import for ProfessionalTeam to a named import as there is no default export.
 import { ProfessionalTeam } from './components/ProfessionalTeam';
 import ProfessionalIntegrations from './components/ProfessionalIntegrations';
 import ProfessionalCustomization from './components/ProfessionalCustomization';
 import ProfessionalBilling from './components/ProfessionalBilling';
 import AuditLog from './components/AuditLog';
-// FIX: Changed import paths to be explicit, pointing to index files.
-import { AppView, AuthView, Employee, Contract, EmployeeDocument, LiquidacionRun, PendingLiquidation, EmployeeStatus, Task, Company, UpcomingPayroll, ProfessionalAlert, ProfessionalActivity, AuditLogEvent, HelpArticle } from './types/index';
-// FIX: Changed import paths to be explicit, pointing to index files.
-import { MOCK_EMPLOYEES, MOCK_CONTRACTS, MOCK_DOCUMENTS, MOCK_LIQUIDACIONES, MOCK_TASKS, MOCK_PAYROLL_HISTORY, MOCK_COMPANIES, MOCK_UPCOMING_PAYROLLS, MOCK_PROFESSIONAL_ALERTS, MOCK_PROFESSIONAL_ACTIVITY, MOCK_TEAM_MEMBERS, MOCK_BILLING_INFO, MOCK_AUDIT_LOGS, MOCK_HELP_ARTICLES } from './constants/index';
+import { AppView, AuthView, Employee, Contract, EmployeeDocument, LiquidacionRun, PendingLiquidation, EmployeeStatus, Task, Company, UpcomingPayroll, ProfessionalAlert, ProfessionalActivity, AuditLogEvent, HelpArticle, Notification } from './types/index';
+import { MOCK_EMPLOYEES, MOCK_CONTRACTS, MOCK_DOCUMENTS, MOCK_LIQUIDACIONES, MOCK_TASKS, MOCK_PAYROLL_HISTORY, MOCK_COMPANIES, MOCK_UPCOMING_PAYROLLS, MOCK_PROFESSIONAL_ALERTS, MOCK_PROFESSIONAL_ACTIVITY, MOCK_TEAM_MEMBERS, MOCK_BILLING_INFO, MOCK_AUDIT_LOGS, MOCK_HELP_ARTICLES, MOCK_NOTIFICATIONS } from './constants/index';
 import FeaturesPage from './components/FeaturesPage';
 import PricingPage from './components/PricingPage';
 import AboutPage from './components/AboutPage';
@@ -83,6 +75,7 @@ const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>(MOCK_TASKS);
   const [companies, setCompanies] = useState<Company[]>(MOCK_COMPANIES);
   const [auditLogs, setAuditLogs] = useState<AuditLogEvent[]>(MOCK_AUDIT_LOGS);
+  const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
 
   // Professional Firm State
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
@@ -135,6 +128,29 @@ const App: React.FC = () => {
     setCompanyToEdit(null);
     setIsCompanyModalOpen(false);
   };
+
+  // --- Notification Handlers ---
+  const handleMarkNotificationAsRead = (notificationId: string) => {
+    setNotifications(prev => prev.map(n => n.id === notificationId ? { ...n, isRead: true } : n));
+  };
+  
+  const handleDismissNotification = (notificationId: string) => {
+    setNotifications(prev => prev.filter(n => n.id !== notificationId));
+  };
+  
+  const handleClearReadNotifications = () => {
+    setNotifications(prev => prev.filter(n => !n.isRead));
+  };
+
+  const handleNotificationClick = (link: Notification['link']) => {
+    if (link) {
+      if (link.id) {
+        setSelectedEmployeeId(link.id);
+      }
+      setActiveView(link.view);
+    }
+  };
+
 
   // --- Navigation & State Handlers ---
   const handleLogin = (selectedUserType: UserType) => {
@@ -500,13 +516,17 @@ const App: React.FC = () => {
           companies={companies}
           selectedCompany={currentCompany}
           onSelectCompany={handleSelectCompany}
+          notifications={notifications}
+          onMarkAsRead={handleMarkNotificationAsRead}
+          onDismiss={handleDismissNotification}
+          onClearRead={handleClearReadNotifications}
+          onNotificationClick={handleNotificationClick}
         />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-light pb-20 md:pb-0">
           {renderView()}
         </main>
       </div>
       
-      {/* FIX: Replaced `onLogout` with the correctly named `handleLogout` function. */}
       <BottomNavBar activeView={activeView} setActiveView={handleViewChange} onLogout={handleLogout} />
 
       {isAddEmployeeModalOpen && (

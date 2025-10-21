@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Search, Bell, ChevronDown, Plus, Users, FileText, UserPlus, ClipboardCheck, ArrowLeftRight } from './icons';
-// FIX: Changed import path to be explicit, pointing to index file.
-import { Employee, SearchResult, AppView, Company } from '../types/index';
+import { Search, Bell, ChevronDown, Plus, Users, FileText, UserPlus, ClipboardCheck, ArrowLeftRight, Clock, AlertTriangle, Info, X } from './icons';
+import { Employee, SearchResult, AppView, Company, Notification, NotificationType } from '../types/index';
 import CompanyAvatar from './CompanyAvatar';
 
 const reportTypes = [
@@ -10,6 +9,15 @@ const reportTypes = [
   { id: 'DGT3', title: 'Planilla Personal Fijo (DGT-3)', description: 'Reporte para Min. de Trabajo' },
   { id: 'DGT4', title: 'Cambios en Personal (DGT-4)', description: 'Reporte para Min. de Trabajo' },
 ];
+
+const getNotificationIcon = (type: NotificationType) => {
+    switch(type) {
+        case NotificationType.ALERT: return <AlertTriangle className="w-5 h-5 text-yellow-500" />;
+        case NotificationType.REMINDER: return <Clock className="w-5 h-5 text-blue-500" />;
+        case NotificationType.INFO: return <Info className="w-5 h-5 text-gray-500" />;
+        default: return <Info className="w-5 h-5 text-gray-500" />;
+    }
+};
 
 interface HeaderProps {
     employees: Employee[];
@@ -21,6 +29,11 @@ interface HeaderProps {
     companies: Company[];
     selectedCompany: Company | null;
     onSelectCompany: (companyId: string) => void;
+    notifications: Notification[];
+    onMarkAsRead: (id: string) => void;
+    onDismiss: (id: string) => void;
+    onClearRead: () => void;
+    onNotificationClick: (link?: Notification['link']) => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -32,15 +45,24 @@ const Header: React.FC<HeaderProps> = ({
   userType,
   companies,
   selectedCompany,
-  onSelectCompany
+  onSelectCompany,
+  notifications,
+  onMarkAsRead,
+  onDismiss,
+  onClearRead,
+  onNotificationClick
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
   const [isCompanySwitcherOpen, setIsCompanySwitcherOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const addMenuRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const companySwitcherRef = useRef<HTMLDivElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
+
+  const unreadCount = useMemo(() => notifications.filter(n => !n.isRead).length, [notifications]);
 
   const searchResults = useMemo<SearchResult[]>(() => {
     if (searchTerm.length < 2) return [];
@@ -70,15 +92,10 @@ const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (addMenuRef.current && !addMenuRef.current.contains(event.target as Node)) {
-        setIsAddMenuOpen(false);
-      }
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setSearchTerm('');
-      }
-      if (companySwitcherRef.current && !companySwitcherRef.current.contains(event.target as Node)) {
-        setIsCompanySwitcherOpen(false);
-      }
+      if (addMenuRef.current && !addMenuRef.current.contains(event.target as Node)) setIsAddMenuOpen(false);
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) setSearchTerm('');
+      if (companySwitcherRef.current && !companySwitcherRef.current.contains(event.target as Node)) setIsCompanySwitcherOpen(false);
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) setIsNotificationsOpen(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -97,6 +114,16 @@ const Header: React.FC<HeaderProps> = ({
     onSelectCompany(companyId);
     setIsCompanySwitcherOpen(false);
   }
+
+  const handleNotificationItemClick = (notification: Notification) => {
+    if (!notification.isRead) {
+        onMarkAsRead(notification.id);
+    }
+    if (notification.link) {
+        onNotificationClick(notification.link);
+    }
+    setIsNotificationsOpen(false);
+  };
 
   const isFirmDashboardView = userType === 'professional_firm' && !selectedCompany;
 
@@ -177,10 +204,49 @@ const Header: React.FC<HeaderProps> = ({
                 )}
             </div>
         )}
-        <button className="relative text-gray-500 hover:text-primary transition">
-          <Bell className="w-6 h-6" />
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-xs rounded-full flex items-center justify-center">3</span>
-        </button>
+        <div className="relative" ref={notificationsRef}>
+            <button onClick={() => setIsNotificationsOpen(prev => !prev)} className="relative text-gray-500 hover:text-primary transition">
+              <Bell className="w-6 h-6" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-xs rounded-full flex items-center justify-center">{unreadCount}</span>
+              )}
+            </button>
+            {isNotificationsOpen && (
+                <div className="absolute top-full right-0 mt-3 w-80 bg-white border rounded-lg shadow-xl overflow-hidden">
+                    <div className="flex justify-between items-center p-3 border-b">
+                        <h4 className="font-bold text-primary">Notificaciones</h4>
+                        <button onClick={onClearRead} className="text-xs text-secondary hover:underline font-semibold">Limpiar leídas</button>
+                    </div>
+                    {notifications.length > 0 ? (
+                        <ul className="max-h-80 overflow-y-auto">
+                           {notifications.map(n => (
+                            <li key={n.id} className={`flex items-start p-3 transition-colors ${!n.isRead ? 'bg-light' : 'bg-white'}`}>
+                                <button onClick={() => handleNotificationItemClick(n)} className="flex-1 flex items-start text-left group">
+                                    <div className="mr-3 mt-1">{getNotificationIcon(n.type)}</div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-gray-700 group-hover:text-primary">{n.text}</p>
+                                        <p className="text-xs text-gray-400 mt-1">{n.timestamp}</p>
+                                    </div>
+                                </button>
+                                <div className="flex items-center ml-2">
+                                     {!n.isRead && (
+                                        <button onClick={() => onMarkAsRead(n.id)} title="Marcar como leída" className="w-5 h-5 flex items-center justify-center">
+                                            <span className="w-2 h-2 bg-secondary rounded-full"></span>
+                                        </button>
+                                     )}
+                                     <button onClick={() => onDismiss(n.id)} title="Descartar" className="p-1 text-gray-400 hover:text-red-500">
+                                         <X className="w-4 h-4" />
+                                     </button>
+                                </div>
+                            </li>
+                           ))}
+                        </ul>
+                    ) : (
+                        <p className="text-center text-sm text-gray-500 py-8">No hay notificaciones.</p>
+                    )}
+                </div>
+            )}
+        </div>
         <div className="flex items-center space-x-3 cursor-pointer">
           <img
             src="https://picsum.photos/id/1005/40/40"

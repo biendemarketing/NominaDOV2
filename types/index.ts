@@ -6,3 +6,4 @@ export * from './professional';
 export * from './security';
 export * from './support';
 export * from './task';
+export * from './notification';
