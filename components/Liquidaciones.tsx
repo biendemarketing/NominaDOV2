@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import { Calculator, UserX, ArrowLeft, Eye } from './icons';
-// FIX: Changed import path to be explicit, pointing to index file.
+// FIX: Changed import path to be explicit, pointing to the index file.
 import { Employee, Contract, LiquidacionResult, LiquidacionRun, PendingLiquidation, EmployeeStatus } from '../types/index';
 import LiquidacionDetailModal from './LiquidacionDetailModal';
 import LiquidacionTemplateModal from './LiquidacionTemplateModal';

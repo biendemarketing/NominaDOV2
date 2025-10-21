@@ -1,11 +1,13 @@
+
 export * from './calendar';
 export * from './companies';
 export * from './documents';
 export * from './employees';
+export * from './notifications';
 export * from './payroll';
 export * from './professional';
 export * from './security';
 export * from './support';
 export * from './tasks';
 export * from './templates';
-export * from './notifications';
+export * from './permissions';

@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-// FIX: Changed import path to be explicit, pointing to index file.
+// FIX: Changed import path to be explicit, pointing to the index file.
 import { Company } from '../types/index';
 import { X } from './icons';
 

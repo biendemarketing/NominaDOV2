@@ -1,84 +1,69 @@
+
 import React from 'react';
 import Card from './Card';
-import { TeamMember, Company } from '../types/index';
-import { Plus } from './icons';
+import { TeamMember, UserRole, Company } from '../types/index';
+import { UserPlus, Pencil, Trash2 } from './icons';
 
 interface ProfessionalTeamProps {
-  teamMembers: TeamMember[];
-  companies: Company[];
-  onInvite: () => void;
+    teamMembers: TeamMember[];
+    userRoles: UserRole[];
+    companies: Company[];
+    onInvite: (member?: TeamMember) => void;
+    onDelete: (memberId: string) => void;
 }
 
-export const ProfessionalTeam: React.FC<ProfessionalTeamProps> = ({ teamMembers, companies, onInvite }) => {
-  const companyMap = new Map(companies.map(c => [c.id, c.name]));
+const ProfessionalTeam: React.FC<ProfessionalTeamProps> = ({ teamMembers, userRoles, companies, onInvite, onDelete }) => {
+    const roleMap = new Map(userRoles.map(r => [r.id, r.name]));
+    const companyMap = new Map(companies.map(c => [c.id, c.name]));
 
-  return (
-    <div className="p-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-heading text-3xl font-bold text-primary">Equipo de la Cuenta</h1>
-          <p className="text-gray-500 mt-1">Gestiona los usuarios de tu cuenta y sus accesos a empresas.</p>
-        </div>
-        <button onClick={onInvite} className="flex items-center bg-secondary text-white font-bold py-2 px-4 rounded-lg hover:bg-secondary/90 transition-all">
-          <Plus className="w-5 h-5 mr-2" />
-          Invitar Miembro
-        </button>
-      </div>
+    return (
+        <div className="p-8">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="font-heading text-3xl font-bold text-primary">Equipo de la Firma</h1>
+                    <p className="text-gray-500 mt-1">Administra los miembros de tu firma y su acceso a las empresas.</p>
+                </div>
+                <button onClick={() => onInvite()} className="flex items-center bg-secondary text-white font-bold py-2 px-4 rounded-lg hover:bg-secondary/90 transition-all">
+                    <UserPlus className="w-5 h-5 mr-2" /> Invitar Miembro
+                </button>
+            </div>
 
-      <Card className="mt-8">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-light">
-                <th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase tracking-wider">Miembro</th>
-                <th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase tracking-wider">Rol</th>
-                <th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase tracking-wider">Empresas Asignadas</th>
-                <th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase tracking-wider">Estatus</th>
-                <th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase tracking-wider text-right">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {teamMembers.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="py-8 px-6 text-center text-gray-500">
-                    No hay miembros de equipo registrados.
-                  </td>
-                </tr>
-              ) : (
-                teamMembers.map((member) => (
-                  <tr key={member.id} className="border-b border-gray-200 hover:bg-light transition-colors">
-                    <td className="py-4 px-6">
-                      <div className="flex items-center">
-                        <img src={member.avatarUrl} alt={member.name} className="w-10 h-10 rounded-full mr-4 object-cover" />
-                        <div>
-                          <p className="font-semibold text-primary">{member.name}</p>
-                          <p className="text-sm text-gray-500">{member.email}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6">
-                      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-primary/10 text-primary">{member.role}</span>
-                    </td>
-                    <td className="py-4 px-6 text-sm text-gray-600">
-                      {member.assignedCompanies && member.assignedCompanies.length > 0
-                        ? member.assignedCompanies.map(id => companyMap.get(id) || 'N/A').join(', ')
-                        : 'Todas'}
-                    </td>
-                    <td className="py-4 px-6">
-                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${member.status === 'Activo' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                        {member.status}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      <button className="text-secondary hover:underline font-semibold">Editar</button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+            <Card className="mt-8">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead>
+                            <tr className="bg-light">
+                                <th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase">Nombre</th>
+                                <th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase">Rol</th>
+                                <th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase">Empresas Asignadas</th>
+                                <th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {teamMembers.map(member => (
+                                <tr key={member.id} className="border-b last:border-0 hover:bg-light">
+                                    <td className="py-4 px-6">
+                                        <p className="font-semibold text-primary">{member.name}</p>
+                                        <p className="text-sm text-gray-500">{member.email}</p>
+                                    </td>
+                                    <td className="py-4 px-6 text-gray-700">{roleMap.get(member.roleId) || 'N/A'}</td>
+                                    <td className="py-4 px-6 text-sm text-gray-600">
+                                        {member.companyIds && member.companyIds.length > 0
+                                            ? `${member.companyIds.map(id => companyMap.get(id) || id).join(', ')}`
+                                            : 'Todas las empresas'}
+                                    </td>
+                                    <td className="py-4 px-6 text-right">
+                                        <button onClick={() => onInvite(member)} className="p-2 text-gray-400 hover:text-blue-600"><Pencil className="w-4 h-4" /></button>
+                                        <button onClick={() => onDelete(member.id)} className="p-2 text-gray-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </Card>
         </div>
-      </Card>
-    </div>
-  );
+    );
 };
+
+export default ProfessionalTeam;

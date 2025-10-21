@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
-// FIX: Changed import path to be explicit, pointing to index file.
+// FIX: Changed import path to be explicit, pointing to the index file.
 import { Employee, Contract, EmployeeStatus } from '../types/index';
 import { Calculator, UserX, HandCoins, DollarSign } from './icons';
 
