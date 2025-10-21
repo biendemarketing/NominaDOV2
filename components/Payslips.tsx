@@ -1,7 +1,5 @@
 import React, { useState, useMemo } from 'react';
-// FIX: Changed import path to be explicit, pointing to the index file.
 import { MOCK_PAYMENT_HISTORY } from '../constants/index';
-// FIX: Changed import path to be explicit, pointing to the index file.
 import { PaymentHistory, Employee, PayslipData } from '../types/index';
 import Card from './Card';
 import { Search } from './icons';
@@ -23,7 +21,7 @@ export const Payslips: React.FC<PayslipsProps> = ({ employees }) => {
     const employee = employeeMap.get(p.employeeId);
     if (!employee) return false;
     return employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           p.period.toLowerCase().includes(searchTerm.toLowerCase());
+              p.period.toLowerCase().includes(searchTerm.toLowerCase());
   }), [searchTerm, employeeMap]);
   
   const formatDate = (dateString: string) => 
@@ -103,7 +101,12 @@ export const Payslips: React.FC<PayslipsProps> = ({ employees }) => {
                     <td className="py-4 px-6 text-gray-700">{formatDate(p.payDate)}</td>
                     <td className="py-4 px-6 font-bold text-primary text-right">{formatCurrency(p.netPay)}</td>
                     <td className="py-4 px-6 text-center">
-                        <button onClick={() => handleViewPayslip(p)} className="text-secondary hover:underline font-semibold">Ver Volante</button>
+                        <button 
+                            onClick={() => handleViewPayslip(p)} 
+                            className="text-secondary hover:underline font-semibold"
+                        >
+                            Ver Volante
+                        </button>
                     </td>
                   </tr>
                 );
