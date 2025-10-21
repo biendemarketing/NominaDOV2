@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Search, Bell, ChevronDown, Plus, Users, FileText, UserPlus, ClipboardCheck, ArrowLeftRight, Clock, AlertTriangle, Info, X } from './icons';
+import { Search, Bell, ChevronDown, Plus, Users, FileText, UserPlus, ClipboardCheck, ArrowLeftRight, Clock, AlertTriangle, Info, X, LogOut, Settings as SettingsIcon, UserCog } from './icons';
 import { Employee, SearchResult, AppView, Company, Notification, NotificationType } from '../types/index';
 import CompanyAvatar from './CompanyAvatar';
 
@@ -56,11 +56,13 @@ const Header: React.FC<HeaderProps> = ({
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
   const [isCompanySwitcherOpen, setIsCompanySwitcherOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   const addMenuRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const companySwitcherRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
   const unreadCount = useMemo(() => notifications.filter(n => !n.isRead).length, [notifications]);
 
@@ -96,6 +98,7 @@ const Header: React.FC<HeaderProps> = ({
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) setSearchTerm('');
       if (companySwitcherRef.current && !companySwitcherRef.current.contains(event.target as Node)) setIsCompanySwitcherOpen(false);
       if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) setIsNotificationsOpen(false);
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) setIsProfileMenuOpen(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -123,6 +126,17 @@ const Header: React.FC<HeaderProps> = ({
         onNotificationClick(notification.link);
     }
     setIsNotificationsOpen(false);
+  };
+  
+  const handleMenuClick = (view: AppView) => {
+    setActiveView(view);
+    setIsProfileMenuOpen(false);
+  };
+  
+  const handleLogout = () => {
+    // onLogout is defined in App.tsx and passed as a prop
+    // This assumes onLogout handles all necessary state changes
+    setIsProfileMenuOpen(false);
   };
 
   const isFirmDashboardView = userType === 'professional_firm' && !selectedCompany;
@@ -247,17 +261,37 @@ const Header: React.FC<HeaderProps> = ({
                 </div>
             )}
         </div>
-        <div className="flex items-center space-x-3 cursor-pointer">
-          <img
-            src="https://picsum.photos/id/1005/40/40"
-            alt="User Avatar"
-            className="w-10 h-10 rounded-full"
-          />
-          <div className="hidden sm:block">
-            <p className="font-semibold text-sm text-primary">Juan Pérez</p>
-            <p className="text-xs text-gray-500">{userType === 'professional_firm' ? 'Cuenta Profesional' : 'Cuenta Individual'}</p>
-          </div>
-          <ChevronDown className="w-4 h-4 text-gray-400 hidden sm:block" />
+        <div className="relative" ref={profileMenuRef}>
+            <button onClick={() => setIsProfileMenuOpen(prev => !prev)} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-light transition-colors">
+                <img
+                    src="https://picsum.photos/id/1005/40/40"
+                    alt="User Avatar"
+                    className="w-10 h-10 rounded-full"
+                />
+                <div className="hidden sm:block text-left">
+                    <p className="font-semibold text-sm text-primary">Juan Pérez</p>
+                    <p className="text-xs text-gray-500">{userType === 'professional_firm' ? 'Cuenta Profesional' : 'Cuenta Individual'}</p>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-gray-400 hidden sm:block transition-transform duration-200 ${isProfileMenuOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {isProfileMenuOpen && (
+                <div className="absolute top-full right-0 mt-2 w-56 bg-white border rounded-lg shadow-xl overflow-hidden py-1 z-40">
+                    {userType === 'professional_firm' && !selectedCompany && (
+                        <button onClick={() => handleMenuClick(AppView.PROFESSIONAL_ACCOUNT)} className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-light">
+                            <UserCog className="w-4 h-4 mr-3 text-gray-500"/> Cuenta Profesional
+                        </button>
+                    )}
+                    {(userType === 'single_company' || (userType === 'professional_firm' && selectedCompany)) && (
+                        <button onClick={() => handleMenuClick(AppView.SETTINGS)} className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-light">
+                           <SettingsIcon className="w-4 h-4 mr-3 text-gray-500"/> Configuración
+                       </button>
+                    )}
+                    <div className="border-t my-1"></div>
+                    <button onClick={handleLogout} className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                        <LogOut className="w-4 h-4 mr-3"/> Cerrar Sesión
+                    </button>
+                </div>
+            )}
         </div>
       </div>
     </header>
