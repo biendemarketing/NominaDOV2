@@ -508,7 +508,10 @@ const App: React.FC = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header 
           employees={companyFilteredData.employees}
+          tasks={tasks}
+          articles={MOCK_HELP_ARTICLES}
           onSelectEmployee={handleSelectEmployee}
+          onSelectArticle={handleSelectArticle}
           setActiveView={handleViewChange}
           onOpenAddEmployeeModal={handleOpenAddEmployeeModal}
           onOpenTaskModal={() => handleOpenTaskModal(null)}

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Search, Bell, ChevronDown, Plus, Users, FileText, UserPlus, ClipboardCheck, ArrowLeftRight, Clock, AlertTriangle, Info, X, LogOut, Settings as SettingsIcon, UserCog } from './icons';
-import { Employee, SearchResult, AppView, Company, Notification, NotificationType } from '../types/index';
+import { Search, Bell, ChevronDown, Plus, Users, FileText, UserPlus, ClipboardCheck, ArrowLeftRight, Clock, AlertTriangle, Info, X, LogOut, Settings as SettingsIcon, UserCog, HelpCircle } from './icons';
+import { Employee, SearchResult, AppView, Company, Notification, NotificationType, Task, HelpArticle } from '../types/index';
 import CompanyAvatar from './CompanyAvatar';
 
 const reportTypes = [
@@ -21,7 +21,10 @@ const getNotificationIcon = (type: NotificationType) => {
 
 interface HeaderProps {
     employees: Employee[];
+    tasks: Task[];
+    articles: HelpArticle[];
     onSelectEmployee: (employeeId: string) => void;
+    onSelectArticle: (articleId: string) => void;
     setActiveView: (view: AppView) => void;
     onOpenAddEmployeeModal: () => void;
     onOpenTaskModal: () => void;
@@ -38,7 +41,10 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ 
   employees, 
+  tasks,
+  articles,
   onSelectEmployee, 
+  onSelectArticle,
   setActiveView, 
   onOpenAddEmployeeModal, 
   onOpenTaskModal,
@@ -89,8 +95,26 @@ const Header: React.FC<HeaderProps> = ({
         description: r.description,
       }));
 
-    return [...employeeResults, ...reportResults];
-  }, [searchTerm, employees]);
+    const taskResults = tasks
+      .filter(t => t.title.toLowerCase().includes(lowercasedTerm))
+      .map(t => ({
+        id: t.id,
+        type: 'task' as 'task',
+        title: t.title,
+        description: `Tarea - Vence: ${new Date(t.dueDate + 'T00:00:00').toLocaleDateString('es-DO')}`,
+      }));
+
+    const articleResults = articles
+      .filter(a => a.title.toLowerCase().includes(lowercasedTerm) || a.tags.some(tag => tag.toLowerCase().includes(lowercasedTerm)))
+      .map(a => ({
+        id: a.id,
+        type: 'article' as 'article',
+        title: a.title,
+        description: `Artículo de Ayuda - Categoría: ${a.category}`,
+      }));
+
+    return [...employeeResults, ...taskResults, ...reportResults, ...articleResults];
+  }, [searchTerm, employees, tasks, articles]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -105,12 +129,31 @@ const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const handleSelectResult = (result: SearchResult) => {
-    if (result.type === 'employee') {
-      onSelectEmployee(result.id);
-    } else {
-      setActiveView(AppView.REPORTS);
+    switch (result.type) {
+        case 'employee':
+            onSelectEmployee(result.id);
+            break;
+        case 'report':
+            setActiveView(AppView.REPORTS);
+            break;
+        case 'task':
+            setActiveView(AppView.TASKS);
+            break;
+        case 'article':
+            onSelectArticle(result.id);
+            break;
     }
     setSearchTerm('');
+  };
+
+  const getResultIcon = (type: SearchResult['type']) => {
+    switch(type) {
+        case 'employee': return <Users className="w-5 h-5 text-secondary" />;
+        case 'report': return <FileText className="w-5 h-5 text-secondary" />;
+        case 'task': return <ClipboardCheck className="w-5 h-5 text-secondary" />;
+        case 'article': return <HelpCircle className="w-5 h-5 text-secondary" />;
+        default: return null;
+    }
   };
 
   const handleCompanyChange = (companyId: string) => {
@@ -183,7 +226,7 @@ const Header: React.FC<HeaderProps> = ({
                     {searchResults.map(result => (
                       <li key={`${result.type}-${result.id}`} onClick={() => handleSelectResult(result)} className="flex items-center px-4 py-3 hover:bg-light cursor-pointer">
                         <div className="p-2 bg-secondary/10 rounded-md mr-3">
-                          {result.type === 'employee' ? <Users className="w-5 h-5 text-secondary" /> : <FileText className="w-5 h-5 text-secondary" />}
+                          {getResultIcon(result.type)}
                         </div>
                         <div>
                           <p className="font-semibold text-sm text-primary">{result.title}</p>

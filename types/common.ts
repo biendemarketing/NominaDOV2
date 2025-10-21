@@ -61,7 +61,7 @@ export interface Holiday {
 
 export interface SearchResult {
   id: string;
-  type: 'employee' | 'report';
+  type: 'employee' | 'report' | 'task' | 'article';
   title: string;
   description: string;
 }
