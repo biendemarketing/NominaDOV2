@@ -1,5 +1,6 @@
 import React from 'react';
-import { LiquidacionRun } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { LiquidacionRun } from '../types/index';
 import { UserX } from './icons';
 
 interface LiquidacionDetailModalProps {

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { LiquidacionRun, Contract } from '../types';
-import { LIQUIDACION_TEMPLATE_TEXT, MOCK_COMPANY_PROFILE } from '../constants';
+// FIX: Changed import path to be explicit, pointing to the index file.
+import { LiquidacionRun, Contract } from '../types/index';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { LIQUIDACION_TEMPLATE_TEXT, MOCK_COMPANY_PROFILE } from '../constants/index';
 import { Download, FileText } from './icons';
 
 interface LiquidacionTemplateModalProps {
@@ -27,8 +29,11 @@ const LiquidacionTemplateModal: React.FC<LiquidacionTemplateModalProps> = ({ isO
 
   const getFormattedText = () => {
     if (!data || !contract) return '';
+    const today = new Date();
     let text = LIQUIDACION_TEMPLATE_TEXT;
-    text = text.replace(/{currentDate}/g, new Date().toLocaleDateString('es-DO', { year: 'numeric', month: 'long', day: 'numeric' }));
+    text = text.replace(/{currentDay}/g, today.getDate().toString());
+    text = text.replace(/{currentMonth}/g, today.toLocaleDateString('es-DO', { month: 'long' }));
+    text = text.replace(/{currentYear}/g, today.getFullYear().toString());
     text = text.replace(/{companyName}/g, companyProfile.name);
     text = text.replace(/{companyRNC}/g, companyProfile.rnc);
     text = text.replace(/{employeeName}/g, data.employee.name);

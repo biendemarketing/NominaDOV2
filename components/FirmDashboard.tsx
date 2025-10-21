@@ -1,17 +1,18 @@
+
+
 import React from 'react';
-// FIX: Import ProfessionalAlert and ProfessionalActivity instead of FirmAlert and FirmActivity.
-import { Company, Employee, EmployeeStatus, UpcomingPayroll, PayrollStatus, ProfessionalAlert, AlertType, ProfessionalActivity } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Company, Employee, EmployeeStatus, UpcomingPayroll, PayrollStatus, ProfessionalAlert, AlertType, ProfessionalActivity } from '../types/index';
 import Card from './Card';
-import { Building2, Users, DollarSign, FileClock, CheckCircle, Clock, AlertTriangle, Info, PieChart as PieChartIcon } from './icons';
+import { Building2, Users, FileClock, CheckCircle, Clock, AlertTriangle, Info, PieChart as PieChartIcon } from './icons';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 interface FirmDashboardProps {
     companies: Company[];
     employees: Employee[];
     upcomingPayrolls: UpcomingPayroll[];
-    // FIX: Update prop types to use ProfessionalAlert and ProfessionalActivity.
-    firmAlerts: ProfessionalAlert[];
-    firmActivity: ProfessionalActivity[];
+    professionalAlerts: ProfessionalAlert[];
+    professionalActivity: ProfessionalActivity[];
     onSelectCompany: (companyId: string) => void;
 }
 
@@ -35,7 +36,7 @@ const getAlertIcon = (type: AlertType) => {
     }
 };
 
-const FirmDashboard: React.FC<FirmDashboardProps> = ({ companies, employees, upcomingPayrolls, firmAlerts, firmActivity, onSelectCompany }) => {
+const FirmDashboard: React.FC<FirmDashboardProps> = ({ companies, employees, upcomingPayrolls, professionalAlerts, professionalActivity, onSelectCompany }) => {
     
     const activeClients = companies.length;
     const payrollsToProcess = upcomingPayrolls.filter(p => p.status === PayrollStatus.PENDING).length;
@@ -131,7 +132,7 @@ const FirmDashboard: React.FC<FirmDashboardProps> = ({ companies, employees, upc
                      <Card>
                         <h2 className="font-heading text-xl font-bold text-primary mb-4">Alertas y Notificaciones</h2>
                         <div className="space-y-3 max-h-48 overflow-y-auto pr-2">
-                           {firmAlerts.map(alert => (
+                           {professionalAlerts.map(alert => (
                                <div key={alert.id} className="flex items-start p-3 bg-light rounded-lg">
                                    <div className="flex-shrink-0 mt-1">{getAlertIcon(alert.type)}</div>
                                    <p className="text-sm text-gray-700 ml-3">{alert.text}</p>
@@ -165,7 +166,7 @@ const FirmDashboard: React.FC<FirmDashboardProps> = ({ companies, employees, upc
                     <Card>
                         <h2 className="font-heading text-xl font-bold text-primary mb-4">Actividad Reciente de la Firma</h2>
                         <div className="space-y-1">
-                           {firmActivity.map(activity => (
+                           {professionalActivity.map(activity => (
                                <div key={activity.id} className="flex items-center justify-between p-3 hover:bg-light rounded-lg">
                                    <p className="text-sm text-gray-700">{activity.action}</p>
                                    <div className="text-right">

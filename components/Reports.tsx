@@ -1,9 +1,11 @@
 
+
 import React, { useState } from 'react';
 import Card from './Card';
 import ReportModal from './ReportModal';
 import { Download, Building, Briefcase } from './icons';
-import { Employee } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee } from '../types/index';
 
 type ReportType = 'TSS' | 'DGII' | 'DGT3' | 'DGT4';
 
@@ -22,12 +24,10 @@ const reportTypes: ReportInfo[] = [
   { type: 'DGT4', title: 'Cambios en Personal (DGT-4)', description: 'Reporte de altas y bajas de empleados ocurridas durante el mes.', agency: 'Ministerio de Trabajo', icon: <Briefcase className="w-8 h-8 text-secondary" /> },
 ];
 
-// Fix: Add props interface to accept employees data
 interface ReportsProps {
   employees: Employee[];
 }
 
-// Fix: Use ReportsProps and destructure employees from props
 const Reports: React.FC<ReportsProps> = ({ employees }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<ReportInfo | null>(null);
@@ -37,7 +37,6 @@ const Reports: React.FC<ReportsProps> = ({ employees }) => {
     setIsModalOpen(true);
   };
 
-  // Fix: Use employees prop instead of MOCK_EMPLOYEES
   const generateMockData = (type: ReportType) => {
     switch (type) {
       case 'TSS':

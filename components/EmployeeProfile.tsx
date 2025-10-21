@@ -1,8 +1,11 @@
 
 
+
 import React, { useState } from 'react';
-import { MOCK_PAYMENT_HISTORY, MOCK_EMPLOYEE_HISTORY, MOCK_COMPANY_PROFILE } from '../constants';
-import { Employee, Contract, PaymentHistory, EmployeeHistoryEvent, Nationality, EmployeeDocument } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { MOCK_PAYMENT_HISTORY, MOCK_EMPLOYEE_HISTORY, MOCK_COMPANY_PROFILE } from '../constants/index';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, Contract, PaymentHistory, EmployeeHistoryEvent, Nationality, EmployeeDocument } from '../types/index';
 import Card from './Card';
 import { ArrowLeft, Info, FileSignature, History, FileText as FileIcon, Clock, UploadCloud, Trash2, Download, CheckCircle, FileImage } from './icons';
 import ContractModal from './ContractModal';

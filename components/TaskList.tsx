@@ -1,6 +1,8 @@
 
+
 import React, { useMemo } from 'react';
-import { Task, TaskStatus, TaskPriority, Employee } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Task, TaskStatus, TaskPriority, Employee } from '../types/index';
 import { PlusCircle, Calendar, SignalHigh, SignalMedium, SignalLow, Pencil } from './icons';
 
 interface TaskListProps {

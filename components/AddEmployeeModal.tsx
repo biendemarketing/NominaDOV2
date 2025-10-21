@@ -1,11 +1,12 @@
+
+
 import React, { useState } from 'react';
-import { Employee, Contract, Nationality } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, Contract, Nationality } from '../types/index';
 
 interface AddEmployeeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  // Fix: Update the onSave prop to expect contractData without a status, as it's set in App.tsx
-  // FIX: Also omit companyId from employeeData and contractData as it is handled by App.tsx
   onSave: (employeeData: Omit<Employee, 'id' | 'avatarUrl' | 'status' | 'companyId'>, contractData: Omit<Contract, 'id' | 'employeeId' | 'status' | 'companyId'>) => void;
 }
 
@@ -67,7 +68,6 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({ isOpen, onClose, on
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // FIX: Omit companyId from the type as it is not created here, but in the parent component.
     const employeeData: Omit<Employee, 'id' | 'avatarUrl' | 'status' | 'companyId'> = {
         name: formData.name,
         position: formData.position,
@@ -81,7 +81,6 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({ isOpen, onClose, on
         isFiscalResident: formData.nationality === Nationality.FOREIGN ? formData.isFiscalResident : true,
     };
 
-    // FIX: Omit companyId from the type as it is not created here, but in the parent component.
     const contractData: Omit<Contract, 'id' | 'employeeId' | 'status' | 'companyId'> = {
         startDate: formData.startDate,
         endDate: formData.isIndefinite ? undefined : formData.endDate,

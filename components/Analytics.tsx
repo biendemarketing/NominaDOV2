@@ -1,7 +1,9 @@
 
+
 import React, { useMemo, useState } from 'react';
 import Card from './Card';
-import { Employee, Contract, EmployeeStatus } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, Contract, EmployeeStatus } from '../types/index';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, LineChart, Line } from 'recharts';
 import { Users, DollarSign, Clock, Download, FileText, Sheet, FileDown, LineChart as LineChartIcon, BarChartBig } from './icons';
 import AnalyticsDetailModal from './AnalyticsDetailModal';
@@ -59,8 +61,9 @@ const Analytics: React.FC<AnalyticsProps> = ({ employees, contracts }) => {
 
     if (selectedYear !== 'all') {
         const year = parseInt(selectedYear);
-        const startDate = new Date(year, selectedMonth !== 'all' ? parseInt(selectedMonth) : 0, 1);
-        const endDate = new Date(year, selectedMonth !== 'all' ? parseInt(selectedMonth) + 1 : 12, 0);
+        // FIX: Replaced parseInt with Number for explicit type conversion.
+        const startDate = new Date(year, selectedMonth !== 'all' ? Number(selectedMonth) : 0, 1);
+        const endDate = new Date(year, selectedMonth !== 'all' ? Number(selectedMonth) + 1 : 12, 0);
 
         // Employees active during the period
         const activeEmployeeIds = new Set(

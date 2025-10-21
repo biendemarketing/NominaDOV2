@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import Card from './Card';
-import { MOCK_HOLIDAYS } from '../constants';
-import { Employee } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { MOCK_HOLIDAYS } from '../constants/index';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee } from '../types/index';
 import { Cake, CalendarDays } from './icons';
 
 interface CalendarProps {

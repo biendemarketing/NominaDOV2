@@ -1,6 +1,8 @@
 
+
 import React from 'react';
-import { PayslipData } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { PayslipData } from '../types/index';
 import { HandCoins, Printer } from './icons';
 
 interface PayslipModalProps {

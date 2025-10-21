@@ -1,12 +1,14 @@
 
+
 import React, { useState } from 'react';
 import Card from './Card';
 import { Calculator, Award, HandCoins, History, Eye, CheckCircle, ArrowLeft, FileText, Sheet, FileDown } from './icons';
-import { MOCK_PAYROLL_HISTORY } from '../constants';
-import { Employee, EmployeeStatus, RegaliaResult, BonificacionResult, RegularPayrollResult, PayrollNovelty, PayslipData, PayrollRun } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { MOCK_PAYROLL_HISTORY } from '../constants/index';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, EmployeeStatus, RegaliaResult, BonificacionResult, RegularPayrollResult, PayrollNovelty, PayslipData, PayrollRun, PendingLiquidation } from '../types/index';
 import PayslipModal from './PayslipModal';
 
-// Fix: Add props interface to accept employees data
 interface PayrollProps {
   employees: Employee[];
 }
@@ -43,7 +45,6 @@ const WizardStep: React.FC<{ number: number; label: string; isActive: boolean; i
 );
 
 
-// Fix: Use PayrollProps and destructure employees from props
 const Payroll: React.FC<PayrollProps> = ({ employees }) => {
   // View State
   const [currentView, setCurrentView] = useState<PayrollView>('main');
@@ -94,7 +95,6 @@ const Payroll: React.FC<PayrollProps> = ({ employees }) => {
     return annualISR / 24; // Return bi-weekly ISR
   };
 
-  // Fix: Use employees prop instead of MOCK_EMPLOYEES
   const generatePayrollResults = () => {
     const SFS_CAP = 177650;
     const AFP_CAP = 355300;
@@ -162,7 +162,6 @@ const Payroll: React.FC<PayrollProps> = ({ employees }) => {
     setCurrentView('main');
   }
   
-  // Fix: Use employees prop instead of MOCK_EMPLOYEES
   const handleCalculateRegalia = () => {
     const results = employees
       .filter(e => e.status === EmployeeStatus.ACTIVE)
@@ -171,7 +170,6 @@ const Payroll: React.FC<PayrollProps> = ({ employees }) => {
     setShowRegaliaResults(true);
   };
   
-  // Fix: Use employees prop instead of MOCK_EMPLOYEES
   const handleCalculateBonificacion = () => {
     const activeEmployees = employees.filter(e => e.status === EmployeeStatus.ACTIVE);
     const totalSalaries = activeEmployees.reduce((sum, e) => sum + e.salary, 0);
@@ -257,7 +255,6 @@ const Payroll: React.FC<PayrollProps> = ({ employees }) => {
                     <div className="overflow-x-auto mt-4 border border-gray-200/80 rounded-lg">
                         <table className="w-full text-left">
                             <thead><tr className="bg-light"><th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase tracking-wider">Empleado</th><th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase tracking-wider">Horas Extras</th><th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase tracking-wider">Desc. Faltas (DOP)</th><th className="py-3 px-6 text-sm font-semibold text-gray-500 uppercase tracking-wider">Desc. Daños (DOP)</th></tr></thead>
-                            {/* Fix: Use employees prop instead of MOCK_EMPLOYEES */}
                             <tbody>{employees.filter(e => e.status === EmployeeStatus.ACTIVE).map(e => (<tr key={e.id} className="border-b border-gray-200 last:border-0"><td className="py-2 px-6 font-semibold text-primary">{e.name}</td><td className="py-2 px-6"><input type="number" min="0" className="w-24 px-2 py-1 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-secondary/50" value={novelties[e.id]?.overtimeHours || ''} onChange={evt => handleNoveltyChange(e.id, 'overtimeHours', Number(evt.target.value))} /></td><td className="py-2 px-6"><input type="number" min="0" className="w-32 px-2 py-1 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-secondary/50" value={novelties[e.id]?.absenceDeductions || ''} onChange={evt => handleNoveltyChange(e.id, 'absenceDeductions', Number(evt.target.value))} /></td><td className="py-2 px-6"><input type="number" min="0" className="w-32 px-2 py-1 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-secondary/50" value={novelties[e.id]?.damageDeductions || ''} onChange={evt => handleNoveltyChange(e.id, 'damageDeductions', Number(evt.target.value))} /></td></tr>))}</tbody>
                         </table>
                     </div>

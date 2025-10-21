@@ -1,5 +1,6 @@
 import React from 'react';
-import { Company, Employee, EmployeeStatus, UpcomingPayroll, PayrollStatus, ProfessionalAlert, AlertType, ProfessionalActivity } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Company, Employee, EmployeeStatus, UpcomingPayroll, PayrollStatus, ProfessionalAlert, AlertType, ProfessionalActivity } from '../types/index';
 import Card from './Card';
 import { Building2, Users, FileClock, CheckCircle, Clock, AlertTriangle, Info } from './icons';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';

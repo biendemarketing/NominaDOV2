@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Employee, Contract, CompanyProfile } from '../types';
-import { CONTRACT_TEMPLATE_TEXT } from '../constants';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, Contract, CompanyProfile } from '../types/index';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { CONTRACT_TEMPLATE_TEXT } from '../constants/index';
 import { Download, FileText } from './icons';
 
 interface ContractModalProps {

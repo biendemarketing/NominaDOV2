@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { EmployeeDocument, DocumentType, Employee } from '../types';
-import { DOCUMENT_TYPES } from '../constants';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { EmployeeDocument, DocumentType, Employee } from '../types/index';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { DOCUMENT_TYPES } from '../constants/index';
 import { FileUp } from './icons';
 
 interface UploadDocumentModalProps {

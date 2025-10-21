@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Company } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Company } from '../types/index';
 import Card from './Card';
 import CompanyAvatar from './CompanyAvatar';
 import { Plus, Pencil, Trash2, Mail, Phone, MapPin, Briefcase } from './icons';

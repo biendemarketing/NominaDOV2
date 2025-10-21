@@ -1,8 +1,11 @@
 
+
 import React from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { PAYROLL_HISTORY_DATA } from '../constants';
-import { PayrollHistoryData } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { PAYROLL_HISTORY_DATA } from '../constants/index';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { PayrollHistoryData } from '../types/index';
 
 interface PayrollChartProps {
     data: PayrollHistoryData[];

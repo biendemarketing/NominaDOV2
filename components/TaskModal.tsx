@@ -1,6 +1,8 @@
 
+
 import React, { useState, useEffect } from 'react';
-import { Task, TaskPriority, TaskStatus, Employee } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Task, TaskPriority, TaskStatus, Employee } from '../types/index';
 import { Trash2 } from './icons';
 
 interface TaskModalProps {
@@ -77,7 +79,8 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, onDelete
                 <div>
                   <label htmlFor="priority" className="block text-sm font-semibold mb-2 text-gray-600">Prioridad</label>
                   <select id="priority" name="priority" value={formData.priority} onChange={handleChange} className="w-full px-4 py-2 bg-light border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary/50">
-                    {Object.values(TaskPriority).map(p => <option key={p} value={p}>{p}</option>)}
+                    {/* FIX: Explicitly cast enum values to string for key and value props. */}
+                    {Object.values(TaskPriority).map(p => <option key={p as string} value={p as string}>{p}</option>)}
                   </select>
                 </div>
                  <div>

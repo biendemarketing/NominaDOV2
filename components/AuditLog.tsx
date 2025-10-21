@@ -1,7 +1,9 @@
+
+
 import React, { useState, useMemo } from 'react';
 import Card from './Card';
-import { AuditLogEvent, TeamMember, Employee, AuditLogActionType } from '../types';
-// FIX: Imported the 'Users' icon to resolve the 'Cannot find name' error.
+// FIX: Changed import path to be explicit, pointing to the index file.
+import { AuditLogEvent, TeamMember, Employee, AuditLogActionType } from '../types/index';
 import { Search, Filter, FileText, UserPlus, Trash2, LogOut, DollarSign, Pencil, Users } from './icons';
 
 interface AuditLogProps {

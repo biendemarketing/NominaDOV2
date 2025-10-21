@@ -1,5 +1,6 @@
 import React from 'react';
-import { Company } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Company } from '../types/index';
 
 interface CompanyAvatarProps {
   company: Company;

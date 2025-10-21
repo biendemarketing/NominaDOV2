@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
-import { Employee, Contract, EmployeeStatus } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, Contract, EmployeeStatus } from '../types/index';
 import { Calculator, UserX, HandCoins, DollarSign } from './icons';
 
 interface CalculadoraProps {
@@ -93,11 +94,18 @@ const Calculadora: React.FC<CalculadoraProps> = ({ employees, contracts }) => {
         }
 
         let cesantia = 0;
+        // FIX: Corrected the logic for calculating 'cesantía' (severance pay)
         if (manualInputs.reason !== 'Renuncia') {
-            if (yearsWorked >= 5) cesantia = (salary / 23.83) * (15 + (21 * (yearsWorked - 1))) + (salary / 23.83) * 23 * (yearsWorked - 5);
-             else if (yearsWorked >= 1) cesantia = (salary / 23.83) * 21 * yearsWorked;
-             else if (daysWorked >= (6 * 30)) cesantia = (salary / 23.83) * 13;
-             else if (daysWorked >= (3 * 30)) cesantia = (salary / 23.83) * 6;
+            const dailySalary = salary / 23.83;
+            if (yearsWorked >= 5) {
+                cesantia = dailySalary * 23 * Math.floor(yearsWorked);
+            } else if (yearsWorked >= 1) {
+                cesantia = dailySalary * 21 * Math.floor(yearsWorked);
+            } else if (daysWorked >= (6 * 30)) {
+                cesantia = dailySalary * 13;
+            } else if (daysWorked >= (3 * 30)) {
+                cesantia = dailySalary * 6;
+            }
         }
         
         const vacaciones = (salary / 23.83) * 14 * (daysWorked / 365.25);

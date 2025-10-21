@@ -1,7 +1,9 @@
 
 
+
 import React, { useState, useEffect } from 'react';
-import { AuthView } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { AuthView } from '../types/index';
 import { HandCoins, CheckCircle2, DollarSign, BarChartBig, ShieldCheck, ArrowRight, Users, FileText, ChevronDown, Menu, X, FileSignature, FileMinus, Send, HelpCircle } from './icons';
 
 declare var Chart: any;
@@ -410,7 +412,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ setAuthView }) => {
               <div className="bg-white p-8 rounded-xl border-2 border-secondary shadow-lg flex flex-col h-full relative">
                   <div className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full">MÁS POPULAR</div>
                   <h3 className="font-heading text-2xl font-bold text-primary">Avanzado</h3>
-                  <p className="text-gray-500 mt-2">Para empresas con más volumen.</p>
+                  <p className="text-gray-500 mt-2">Para empresas com más volumen.</p>
                   <p className="font-heading text-5xl font-bold text-primary my-6">$150<span className="text-xl font-semibold text-gray-500">/mes</span></p>
                   <ul className="space-y-3 text-gray-600 mb-8">
                       <li className="flex items-center"><CheckCircle2 className="w-5 h-5 text-secondary mr-2" /> 1 Empresa gestionada</li>

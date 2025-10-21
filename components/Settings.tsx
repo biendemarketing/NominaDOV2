@@ -1,9 +1,12 @@
 
+
 import React, { useState } from 'react';
 import Card from './Card';
 import { Building2, Landmark, UserCog, Plug, Users } from './icons';
-import { MOCK_COMPANY_PROFILE, MOCK_BANK_ACCOUNTS, MOCK_USER_ROLES } from '../constants';
-import { CompanyProfile, BankAccount, UserRole } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { MOCK_COMPANY_PROFILE, MOCK_BANK_ACCOUNTS, MOCK_USER_ROLES } from '../constants/index';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { CompanyProfile, BankAccount, UserRole } from '../types/index';
 
 type SettingsTab = 'profile' | 'banks' | 'roles' | 'integrations';
 

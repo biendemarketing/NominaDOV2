@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Company } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Company } from '../types/index';
 import { X } from './icons';
 
 interface CompanyModalProps {
@@ -12,11 +13,13 @@ interface CompanyModalProps {
 const InputField: React.FC<{ label: string; id: keyof Omit<Company, 'id'>; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; required?: boolean; placeholder?: string }> =
 ({ label, id, value, onChange, required = false, placeholder = '' }) => (
     <div>
-        <label htmlFor={id} className="block text-sm font-semibold mb-2 text-gray-600">{label}</label>
+        {/* FIX: Cast id to string to satisfy htmlFor prop type. */}
+        <label htmlFor={id as string} className="block text-sm font-semibold mb-2 text-gray-600">{label}</label>
         <input 
             type="text" 
-            id={id} 
-            name={id} 
+            // FIX: Cast id to string to satisfy id and name prop types.
+            id={id as string} 
+            name={id as string} 
             value={value} 
             onChange={onChange} 
             required={required} 

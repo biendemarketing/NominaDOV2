@@ -1,5 +1,6 @@
 import React from 'react';
-import { HelpArticle } from '../types';
+// FIX: Changed import path to be explicit, pointing to the index file.
+import { HelpArticle } from '../types/index';
 import { ArrowLeft } from './icons';
 import Card from './Card';
 
@@ -18,7 +19,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ article, onBack }) => {
                 <p className="text-sm font-semibold text-secondary mb-2">{article.category}</p>
                 <h1 className="font-heading text-3xl font-bold text-primary mb-6">{article.title}</h1>
                 <div className="prose max-w-none text-gray-700">
-                    {article.content}
+                    <p>{article.content}</p>
                 </div>
             </Card>
         </div>

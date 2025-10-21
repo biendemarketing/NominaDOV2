@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Employee, Contract, ContractStatus } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, Contract, ContractStatus } from '../types/index';
 
 interface EditContractModalProps {
   isOpen: boolean;

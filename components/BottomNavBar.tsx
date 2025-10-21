@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { AppView } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { AppView } from '../types/index';
 import { LayoutDashboard, Users, DollarSign, ClipboardCheck, MoreHorizontal, Settings, LogOut, FileClock, Receipt, FileMinus, HandCoins, PieChart, CalendarDays, Calculator, Send, FileText, X } from './icons';
 
 interface BottomNavBarProps {

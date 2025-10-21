@@ -1,9 +1,12 @@
+
+
 import React, { useMemo } from 'react';
-import { Company, Employee, Contract, EmployeeStatus } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Company, Employee, Contract, EmployeeStatus } from '../types/index';
 import Card from './Card';
-// FIX: Import CartesianGrid from recharts to fix 'Cannot find name' error.
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, CartesianGrid } from 'recharts';
-import { PAYROLL_HISTORY_DATA } from '../constants';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { PAYROLL_HISTORY_DATA } from '../constants/index';
 import PayrollChart from './PayrollChart';
 
 interface FirmAnalyticsProps {

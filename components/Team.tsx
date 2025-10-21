@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from './Card';
-import { TeamMember } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { TeamMember } from '../types/index';
 import { Plus, Users } from './icons';
 
 interface TeamProps {

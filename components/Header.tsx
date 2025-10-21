@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, Bell, ChevronDown, Plus, Users, FileText, UserPlus, ClipboardCheck, ArrowLeftRight } from './icons';
-import { Employee, SearchResult, AppView, Company } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, SearchResult, AppView, Company } from '../types/index';
 import CompanyAvatar from './CompanyAvatar';
 
 const reportTypes = [

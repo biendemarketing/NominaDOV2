@@ -1,5 +1,6 @@
 import React from 'react';
-import { Employee } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee } from '../types/index';
 import { Cake } from './icons';
 
 interface BirthdayCardModalProps {

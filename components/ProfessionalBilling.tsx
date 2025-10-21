@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from './Card';
-import { BillingInfo } from '../types';
+// FIX: Changed import path to be explicit, pointing to the index file.
+import { BillingInfo } from '../types/index';
 import { CreditCard, Download } from './icons';
 
 interface ProfessionalBillingProps {

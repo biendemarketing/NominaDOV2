@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import Card from './Card';
-import { Employee, PayrollRun, EmployeeStatus } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, PayrollRun, EmployeeStatus } from '../types/index';
 import { Send, Download, FileText, CheckCircle } from './icons';
-import { MOCK_BANK_ACCOUNTS } from '../constants';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { MOCK_BANK_ACCOUNTS } from '../constants/index';
 
 interface PaymentDispersionProps {
   employees: Employee[];

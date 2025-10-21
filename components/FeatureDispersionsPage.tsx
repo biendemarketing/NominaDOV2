@@ -1,5 +1,6 @@
 import React from 'react';
-import { AuthView } from '../types';
+// FIX: Changed import path to be explicit, pointing to the index file.
+import { AuthView } from '../types/index';
 import { HandCoins, ArrowRight } from './icons';
 
 interface FeaturePageProps {

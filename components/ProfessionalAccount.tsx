@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from './Card';
-import { MOCK_COMPANY_PROFILE } from '../constants';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { MOCK_COMPANY_PROFILE } from '../constants/index';
 
 const InfoItem: React.FC<{ label: string; value: string }> = ({ label, value }) => (
     <div>

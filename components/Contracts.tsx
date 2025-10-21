@@ -1,7 +1,10 @@
 
+
 import React, { useState, useMemo } from 'react';
-import { MOCK_COMPANY_PROFILE } from '../constants';
-import { Contract, Employee, EmployeeDocument } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { MOCK_COMPANY_PROFILE } from '../constants/index';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Contract, Employee, EmployeeDocument } from '../types/index';
 import Card from './Card';
 import { Search } from './icons';
 import ContractModal from './ContractModal';

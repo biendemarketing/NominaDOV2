@@ -1,6 +1,8 @@
 
+
 import React, { useState } from 'react';
-import { Employee, EmployeeStatus, Contract } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, EmployeeStatus, Contract } from '../types/index';
 import Card from './Card';
 import { Search, UserPlus, Filter } from './icons';
 

@@ -1,5 +1,7 @@
 
 
+
+
 import React, { useState, useMemo } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
@@ -14,7 +16,8 @@ import Reports from './components/Reports';
 import EmployeeProfile from './components/EmployeeProfile';
 import Settings from './components/Settings';
 import Contracts from './components/Contracts';
-import Payslips from './components/Payslips';
+// FIX: Changed default import for Payslips to a named import to resolve module loading error.
+import { Payslips } from './components/Payslips';
 import Liquidaciones from './components/Liquidaciones';
 import Analytics from './components/Analytics';
 import Calendar from './components/Calendar';
@@ -32,13 +35,16 @@ import ProfessionalAnalytics from './components/ProfessionalAnalytics';
 import ProfessionalAccount from './components/ProfessionalAccount';
 import CompanyModal from './components/CompanyModal';
 import Team from './components/Team';
-import ProfessionalTeam from './components/ProfessionalTeam';
+// FIX: Changed default import for ProfessionalTeam to a named import as there is no default export.
+import { ProfessionalTeam } from './components/ProfessionalTeam';
 import ProfessionalIntegrations from './components/ProfessionalIntegrations';
 import ProfessionalCustomization from './components/ProfessionalCustomization';
 import ProfessionalBilling from './components/ProfessionalBilling';
 import AuditLog from './components/AuditLog';
-import { AppView, AuthView, Employee, Contract, EmployeeDocument, LiquidacionRun, PendingLiquidation, EmployeeStatus, Task, Company, UpcomingPayroll, ProfessionalAlert, ProfessionalActivity, AuditLogEvent, HelpArticle } from './types';
-import { MOCK_EMPLOYEES, MOCK_CONTRACTS, MOCK_DOCUMENTS, MOCK_LIQUIDACIONES, MOCK_TASKS, MOCK_PAYROLL_HISTORY, MOCK_COMPANIES, MOCK_UPCOMING_PAYROLLS, MOCK_PROFESSIONAL_ALERTS, MOCK_PROFESSIONAL_ACTIVITY, MOCK_TEAM_MEMBERS, MOCK_BILLING_INFO, MOCK_AUDIT_LOGS, MOCK_HELP_ARTICLES } from './constants';
+// FIX: Changed import paths to be explicit, pointing to index files.
+import { AppView, AuthView, Employee, Contract, EmployeeDocument, LiquidacionRun, PendingLiquidation, EmployeeStatus, Task, Company, UpcomingPayroll, ProfessionalAlert, ProfessionalActivity, AuditLogEvent, HelpArticle } from './types/index';
+// FIX: Changed import paths to be explicit, pointing to index files.
+import { MOCK_EMPLOYEES, MOCK_CONTRACTS, MOCK_DOCUMENTS, MOCK_LIQUIDACIONES, MOCK_TASKS, MOCK_PAYROLL_HISTORY, MOCK_COMPANIES, MOCK_UPCOMING_PAYROLLS, MOCK_PROFESSIONAL_ALERTS, MOCK_PROFESSIONAL_ACTIVITY, MOCK_TEAM_MEMBERS, MOCK_BILLING_INFO, MOCK_AUDIT_LOGS, MOCK_HELP_ARTICLES } from './constants/index';
 import FeaturesPage from './components/FeaturesPage';
 import PricingPage from './components/PricingPage';
 import AboutPage from './components/AboutPage';

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import Card from './Card';
-import { Employee, EmployeeDocument } from '../types';
+// FIX: Changed import path to be explicit, pointing to the index file.
+import { Employee, EmployeeDocument } from '../types/index';
 import { Search, UploadCloud, FileText, Trash2 } from './icons';
 import UploadDocumentModal from './UploadDocumentModal';
 

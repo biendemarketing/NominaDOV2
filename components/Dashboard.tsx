@@ -2,9 +2,11 @@ import React, { useMemo } from 'react';
 import Card from './Card';
 import { Calendar, Users, DollarSign, TrendingUp, Megaphone, FileClock, CalendarDays as HolidayIcon, History } from './icons';
 // FIX: Import PAYROLL_HISTORY_DATA from constants to be used in the PayrollChart.
-import { MOCK_HOLIDAYS, MOCK_PAYROLL_HISTORY, PAYROLL_HISTORY_DATA } from '../constants';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { MOCK_HOLIDAYS, MOCK_PAYROLL_HISTORY, PAYROLL_HISTORY_DATA } from '../constants/index';
 import PayrollChart from './PayrollChart';
-import { Employee, EmployeeStatus, Contract, AppView } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, EmployeeStatus, Contract, AppView } from '../types/index';
 
 interface DashboardProps {
     employees: Employee[];

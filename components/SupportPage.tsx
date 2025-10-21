@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { AuthView, HelpArticle, HelpArticleCategory } from '../types';
+// FIX: Changed import path to be explicit, pointing to the index file.
+import { AuthView, HelpArticle, HelpArticleCategory } from '../types/index';
 import { HandCoins, Search, BookOpen, DollarSign, FileText, Settings, MessageSquare, Phone, Users, ArrowRight } from './icons';
 
 interface HelpCenterProps {

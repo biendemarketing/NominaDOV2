@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import { Calculator, UserX, ArrowLeft, Eye } from './icons';
-import { Employee, Contract, LiquidacionResult, LiquidacionRun, PendingLiquidation, EmployeeStatus } from '../types';
+// FIX: Changed import path to be explicit, pointing to index file.
+import { Employee, Contract, LiquidacionResult, LiquidacionRun, PendingLiquidation, EmployeeStatus } from '../types/index';
 import LiquidacionDetailModal from './LiquidacionDetailModal';
 import LiquidacionTemplateModal from './LiquidacionTemplateModal';
 
@@ -38,10 +39,18 @@ const Liquidaciones: React.FC<LiquidacionesProps> = ({ employees, contracts, liq
         }
 
         let cesantia = 0;
+        // FIX: Corrected the logic for calculating 'cesantía' (severance pay)
         if (reason !== 'Renuncia') {
-             if (yearsWorked >= 5) cesantia = (employee.salary / 30) * (23 * 5 + (21 * (Math.floor(yearsWorked) - 5)));
-             else if (yearsWorked >= 1) cesantia = (employee.salary / 30) * 21 * Math.floor(yearsWorked);
-             else if (daysWorked >= (3 * 30)) cesantia = (employee.salary / 30) * 6 * Math.floor(daysWorked / 30);
+            const dailySalary = employee.salary / 23.83;
+            if (yearsWorked >= 5) {
+                cesantia = dailySalary * 23 * Math.floor(yearsWorked);
+            } else if (yearsWorked >= 1) {
+                cesantia = dailySalary * 21 * Math.floor(yearsWorked);
+            } else if (daysWorked >= (6 * 30)) {
+                cesantia = dailySalary * 13;
+            } else if (daysWorked >= (3 * 30)) {
+                cesantia = dailySalary * 6;
+            }
         }
         
         const vacaciones = (employee.salary / 23.83) * 14 * yearsWorked; 
