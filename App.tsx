@@ -35,7 +35,7 @@ import ProfessionalIntegrations from './components/ProfessionalIntegrations';
 import ProfessionalCustomization from './components/ProfessionalCustomization';
 import ProfessionalBilling from './components/ProfessionalBilling';
 import AuditLog from './components/AuditLog';
-import { AppView, AuthView, Employee, Contract, EmployeeDocument, LiquidacionRun, PendingLiquidation, EmployeeStatus, Task, Company, UpcomingPayroll, ProfessionalAlert, ProfessionalActivity, AuditLogEvent, HelpArticle, Notification } from './types/index';
+import { AppView, AuthView, Employee, Contract, EmployeeDocument, LiquidacionRun, PendingLiquidation, EmployeeStatus, Task, Company, UpcomingPayroll, ProfessionalAlert, ProfessionalActivity, AuditLogEvent, HelpArticle, Notification, TeamMember, TeamMemberRole } from './types/index';
 import { MOCK_EMPLOYEES, MOCK_CONTRACTS, MOCK_DOCUMENTS, MOCK_LIQUIDACIONES, MOCK_TASKS, MOCK_PAYROLL_HISTORY, MOCK_COMPANIES, MOCK_UPCOMING_PAYROLLS, MOCK_PROFESSIONAL_ALERTS, MOCK_PROFESSIONAL_ACTIVITY, MOCK_TEAM_MEMBERS, MOCK_BILLING_INFO, MOCK_AUDIT_LOGS, MOCK_HELP_ARTICLES, MOCK_NOTIFICATIONS } from './constants/index';
 import FeaturesPage from './components/FeaturesPage';
 import PricingPage from './components/PricingPage';
@@ -53,6 +53,7 @@ import FeatureLiquidacionesPage from './components/FeatureLiquidacionesPage';
 import FeatureDispersionsPage from './components/FeatureDispersionsPage';
 import FeatureSupportPage from './components/FeatureSupportPage';
 import DocumentsPage from './components/DocumentsPage';
+import InviteMemberModal from './components/InviteMemberModal';
 
 
 export type UserType = 'single_company' | 'professional_firm';
@@ -76,6 +77,7 @@ const App: React.FC = () => {
   const [companies, setCompanies] = useState<Company[]>(MOCK_COMPANIES);
   const [auditLogs, setAuditLogs] = useState<AuditLogEvent[]>(MOCK_AUDIT_LOGS);
   const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(MOCK_TEAM_MEMBERS);
 
   // Professional Firm State
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
@@ -87,6 +89,7 @@ const App: React.FC = () => {
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false);
   const [companyToEdit, setCompanyToEdit] = useState<Company | null>(null);
+  const [isInviteMemberModalOpen, setIsInviteMemberModalOpen] = useState(false);
 
   // --- Derived State (Data filtered by selected company) ---
   const companyFilteredData = useMemo(() => {
@@ -128,6 +131,9 @@ const App: React.FC = () => {
     setCompanyToEdit(null);
     setIsCompanyModalOpen(false);
   };
+
+  const handleOpenInviteMemberModal = () => setIsInviteMemberModalOpen(true);
+  const handleCloseInviteMemberModal = () => setIsInviteMemberModalOpen(false);
 
   // --- Notification Handlers ---
   const handleMarkNotificationAsRead = (notificationId: string) => {
@@ -311,6 +317,17 @@ const App: React.FC = () => {
     setContracts(prev => prev.filter(c => c.companyId !== companyId));
   };
 
+  const handleSaveInviteMember = (memberData: Omit<TeamMember, 'id' | 'avatarUrl' | 'status'>) => {
+    const newMember: TeamMember = {
+        ...memberData,
+        id: `user-${Date.now()}`,
+        status: 'Invitación Pendiente',
+        avatarUrl: `https://picsum.photos/seed/${memberData.email}/200/200`,
+    };
+    setTeamMembers(prev => [...prev, newMember]);
+    handleCloseInviteMemberModal();
+  };
+
 
   // --- View Rendering ---
   const renderView = () => {
@@ -337,7 +354,7 @@ const App: React.FC = () => {
             case AppView.PROFESSIONAL_ANALYTICS:
                 return <ProfessionalAnalytics companies={companies} employees={employees} contracts={contracts} />;
             case AppView.PROFESSIONAL_TEAM:
-                return <ProfessionalTeam teamMembers={MOCK_TEAM_MEMBERS} companies={companies} />;
+                return <ProfessionalTeam teamMembers={teamMembers} companies={companies} onInvite={handleOpenInviteMemberModal} />;
             case AppView.PROFESSIONAL_INTEGRATIONS:
                 return <ProfessionalIntegrations />;
             case AppView.PROFESSIONAL_CUSTOMIZATION:
@@ -361,7 +378,14 @@ const App: React.FC = () => {
     // Single Company Views (for both user types, but data is filtered)
     switch (activeView) {
       case AppView.DASHBOARD:
-        return <Dashboard employees={companyFilteredData.employees} contracts={companyFilteredData.contracts} setActiveView={handleViewChange}/>;
+        return <Dashboard 
+                  employees={companyFilteredData.employees} 
+                  contracts={companyFilteredData.contracts} 
+                  setActiveView={handleViewChange}
+                  notifications={notifications}
+                  onNotificationClick={handleNotificationClick}
+                  tasks={tasks}
+                />;
       case AppView.EMPLOYEES:
         return <EmployeeList 
           employees={companyFilteredData.employees} 
@@ -400,7 +424,7 @@ const App: React.FC = () => {
       case AppView.SETTINGS:
         return <Settings />;
       case AppView.TEAM:
-        return <Team teamMembers={MOCK_TEAM_MEMBERS.slice(0, 1)} />;
+        return <Team teamMembers={teamMembers.slice(0, 1)} onInvite={handleOpenInviteMemberModal} />;
       case AppView.AUDIT_LOG:
         return <AuditLog logs={auditLogs} teamMembers={MOCK_TEAM_MEMBERS} employees={employees} />;
       case AppView.CONTRACTS:
@@ -440,7 +464,14 @@ const App: React.FC = () => {
         return article ? <ArticlePage article={article} onBack={handleBackToHelpCenter} /> : <SupportPage articles={MOCK_HELP_ARTICLES} onSelectArticle={handleSelectArticle} />;
       }
       default:
-        return <Dashboard employees={companyFilteredData.employees} contracts={companyFilteredData.contracts} setActiveView={handleViewChange}/>;
+        return <Dashboard 
+                  employees={companyFilteredData.employees} 
+                  contracts={companyFilteredData.contracts} 
+                  setActiveView={handleViewChange}
+                  notifications={notifications}
+                  onNotificationClick={handleNotificationClick}
+                  tasks={tasks}
+                />;
     }
   };
 
@@ -557,6 +588,16 @@ const App: React.FC = () => {
             onClose={handleCloseCompanyModal}
             onSave={handleSaveCompany}
             companyToEdit={companyToEdit}
+        />
+      )}
+
+      {isInviteMemberModalOpen && (
+        <InviteMemberModal
+            isOpen={isInviteMemberModalOpen}
+            onClose={handleCloseInviteMemberModal}
+            onSave={handleSaveInviteMember}
+            userType={userType}
+            companies={companies}
         />
       )}
     </div>

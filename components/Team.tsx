@@ -1,14 +1,14 @@
 import React from 'react';
 import Card from './Card';
-// FIX: Changed import path to be explicit, pointing to index file.
 import { TeamMember } from '../types/index';
 import { Plus, Users } from './icons';
 
 interface TeamProps {
   teamMembers: TeamMember[];
+  onInvite: () => void;
 }
 
-const Team: React.FC<TeamProps> = ({ teamMembers }) => {
+const Team: React.FC<TeamProps> = ({ teamMembers, onInvite }) => {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between">
@@ -16,7 +16,7 @@ const Team: React.FC<TeamProps> = ({ teamMembers }) => {
           <h1 className="font-heading text-3xl font-bold text-primary">Equipo</h1>
           <p className="text-gray-500 mt-1">Gestiona los usuarios que tienen acceso a tu cuenta.</p>
         </div>
-        <button className="flex items-center bg-secondary text-white font-bold py-2 px-4 rounded-lg hover:bg-secondary/90 transition-all">
+        <button onClick={onInvite} className="flex items-center bg-secondary text-white font-bold py-2 px-4 rounded-lg hover:bg-secondary/90 transition-all">
           <Plus className="w-5 h-5 mr-2" />
           Invitar Miembro
         </button>
